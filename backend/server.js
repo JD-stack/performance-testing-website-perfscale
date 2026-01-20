@@ -11,6 +11,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (req, res) => {
+  res.send("PerfScale backend is running");
+});
+
 // MongoDB connection (Atlas via env)
 mongoose
   .connect(process.env.MONGODB_URI)
@@ -27,4 +31,5 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
 
