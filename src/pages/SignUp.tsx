@@ -7,7 +7,7 @@ import { Button } from '../components/ui/button';
 import { Activity } from 'lucide-react';
 import { toast } from 'sonner@2.0.3';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_URL;
 
 export function SignUp() {
   const [formData, setFormData] = useState({
