@@ -6,6 +6,9 @@ import { Label } from '../components/ui/label';
 import { Button } from '../components/ui/button';
 import { Activity } from 'lucide-react';
 import { toast } from 'sonner@2.0.3';
+
+const API_URL = import.meta.env.VITE_API_URL;
+
 export function SignUp() {
   const [formData, setFormData] = useState({
     name: '',
@@ -24,7 +27,7 @@ export function SignUp() {
     }
 
     try {
-      const response = await fetch('http://localhost:5000/api/auth/signup', {
+      const response = await fetch(`${API_URL}/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -49,7 +52,6 @@ export function SignUp() {
         password: '',
         confirmPassword: ''
       });
-
     } catch {
       toast.error('Server error. Please try again.');
     }
@@ -114,7 +116,9 @@ export function SignUp() {
 
             <div className="mt-6 text-center text-sm">
               <span className="text-gray-600">Already have an account? </span>
-              <Link to="/login" className="text-[#3b82f6] font-medium">Sign in</Link>
+              <Link to="/login" className="text-[#3b82f6] font-medium">
+                Sign in
+              </Link>
             </div>
           </CardContent>
         </Card>
