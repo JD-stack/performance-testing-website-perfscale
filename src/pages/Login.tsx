@@ -14,35 +14,32 @@ export function Login() {
     password: ''
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-    try {
-      const response = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
+  try {
+    const response = await fetch(`${API_URL}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(formData)
+    });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (!response.ok) {
-        toast.error(data.message || 'Login failed');
-        return;
-      }
-
-      // ✅ Save auth data
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-
-      toast.success('Login successful!');
-      
-      // ✅ Redirect to HOME
-      navigate('/');
-    } catch {
-      toast.error('Server error. Please try again.');
+    if (!response.ok) {
+      toast.error(data.message || 'Login failed');
+      return;
     }
-  };
+
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+
+    toast.success('Login successful!');
+    navigate('/');
+  } catch {
+    toast.error('Server error. Please try again.');
+  }
+};
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
