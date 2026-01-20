@@ -4,12 +4,22 @@ const jwt = require("jsonwebtoken");
 const User = require("../models/User");
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET || "d9ebd4a5c511ab29873997165e9623a79fb18842d85ad4e6cf8909d5b540e0d91db230bc073ecf133aea3da85492b6b2f17a26f195114cd56d550b9fe9bbdb73";
 
-/* SIGNUP */
+// ❗ REQUIRE JWT_SECRET in production
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined");
+}
+
+/* ===================== SIGNUP ===================== */
 router.post("/signup", async (req, res) => {
   try {
     const { name, email, password } = req.body;
+
+    // ✅ Validate input
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
 
     // Check existing user
     const existingUser = await User.findOne({ email });
@@ -32,14 +42,20 @@ router.post("/signup", async (req, res) => {
     res.status(201).json({ message: "User registered successfully" });
 
   } catch (error) {
+    console.error("Signup error:", error); // ✅ LOG ERROR
     res.status(500).json({ message: "Signup failed" });
   }
 });
 
-/* LOGIN */
+/* ===================== LOGIN ===================== */
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // ✅ Validate input
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
+    }
 
     // Find user
     const user = await User.findOne({ email });
@@ -70,9 +86,12 @@ router.post("/login", async (req, res) => {
     });
 
   } catch (error) {
+    console.error("Login error:", error); // ✅ LOG ERROR
     res.status(500).json({ message: "Login failed" });
   }
 });
 
 module.exports = router;
+
+
 
