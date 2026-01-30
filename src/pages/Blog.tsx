@@ -1,9 +1,24 @@
-
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 
 export default function Blog() {
   const [activeTab, setActiveTab] = useState<"manual" | "automation">("manual");
+  const navigate = useNavigate();
+
+  // Check if user is logged in
+  const isLoggedIn = () => {
+    return Boolean(localStorage.getItem("token")); // adjust key if needed
+  };
+
+  // Handle gated PDF download
+  const handleDownload = (pdfUrl: string) => {
+    if (!isLoggedIn()) {
+      navigate("/login");
+      return;
+    }
+    window.open(pdfUrl, "_blank");
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -53,9 +68,8 @@ export default function Blog() {
               <Button
                 className="bg-[#1e3a8a] hover:bg-[#1e40af]"
                 onClick={() =>
-                  window.open(
-                    "https://www.qt.io/hubfs/A%20Beginners%20Guide%20to%20Software%20Testing.pdf?hsLang=en",
-                    "_blank"
+                  handleDownload(
+                    "https://www.qt.io/hubfs/A%20Beginners%20Guide%20to%20Software%20Testing.pdf?hsLang=en"
                   )
                 }
               >
@@ -77,9 +91,8 @@ export default function Blog() {
               <Button
                 className="bg-[#1e3a8a] hover:bg-[#1e40af]"
                 onClick={() =>
-                  window.open(
-                    "https://nadiacavalleri.com.ar/wp-content/uploads/2020/05/The-importance-of-SCM-in-testing-201003-Testing-Experience.pdf",
-                    "_blank"
+                  handleDownload(
+                    "https://nadiacavalleri.com.ar/wp-content/uploads/2020/05/The-importance-of-SCM-in-testing-201003-Testing-Experience.pdf"
                   )
                 }
               >
@@ -92,4 +105,5 @@ export default function Blog() {
     </div>
   );
 }
+
 
