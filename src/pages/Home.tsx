@@ -62,7 +62,7 @@ export function Home() {
               Ensure your applications perform flawlessly under any load. Expert performance testing services powered by industry-leading tools.
             </p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/contact">
+              <Link to="/about#contact">
                 <Button size="lg" className="bg-white text-[#1e3a8a] hover:bg-gray-100">
                   Get Started
                   <ArrowRight className="ml-2 h-5 w-5" />
@@ -173,7 +173,7 @@ export function Home() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <Link to="/contact">
+                  <Link to="/about#contact">
                     <Button className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white">
                       Contact Us
                     </Button>
