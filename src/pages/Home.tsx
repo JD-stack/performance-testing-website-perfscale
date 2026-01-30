@@ -51,32 +51,53 @@ export function Home() {
 
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] text-white py-20 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <h1 className="text-4xl lg:text-6xl font-bold mb-6 text-white">
-              Performance Testing at Enterprise Scale
-            </h1>
-            <p className="text-xl lg:text-2xl text-blue-100 mb-8">
-              Ensure your applications perform flawlessly under any load. Expert performance testing services powered by industry-leading tools.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link to="/about#contact">
-                <Button size="lg" className="bg-white text-[#1e3a8a] hover:bg-gray-100">
-                  Get Started
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-              <Link to="/services">
-                <Button size="lg" variant="outline" className="bg-transparent border-white text-white hover:bg-white/10">
-                  Learn More
-                </Button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
+<section
+  className="relative text-white py-20 lg:py-32"
+  style={{
+    backgroundImage: `
+      linear-gradient(
+        to bottom right,
+        rgba(30, 58, 138, 0.92),
+        rgba(30, 64, 175, 0.88),
+        rgba(59, 130, 246, 0.85)
+      ),
+      url("https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1600&q=80")
+    `,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  }}
+>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <div className="max-w-3xl">
+      <h1 className="text-4xl lg:text-6xl font-bold mb-6 text-white">
+        Performance Testing at Enterprise Scale
+      </h1>
+      <p className="text-xl lg:text-2xl text-blue-100 mb-8">
+        Ensure your applications perform flawlessly under any load. Expert
+        performance testing services powered by industry-leading tools.
+      </p>
+      <div className="flex flex-wrap gap-4">
+        <Link to="/about#contact">
+          <Button size="lg" className="bg-white text-[#1e3a8a] hover:bg-gray-100">
+            Get Started
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </Button>
+        </Link>
+        <Link to="/services">
+          <Button
+            size="lg"
+            variant="outline"
+            className="bg-transparent border-white text-white hover:bg-white/10"
+          >
+            Learn More
+          </Button>
+        </Link>
+      </div>
+    </div>
+  </div>
+</section>
+
 
       {/* Performance Testing Services */}
       <section className="py-20 bg-white">
