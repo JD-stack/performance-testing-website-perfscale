@@ -57,9 +57,9 @@ export function Home() {
     backgroundImage: `
       linear-gradient(
         to bottom right,
-        rgba(30, 58, 138, 0.92),
-        rgba(30, 64, 175, 0.88),
-        rgba(59, 130, 246, 0.85)
+        rgba(0,0 , 0, 0.65),
+        rgba(0, 0, 0, 0.65),
+        rgba(0, 0, 0, 0.65)
       ),
       url("https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1600&q=80")
     `,
