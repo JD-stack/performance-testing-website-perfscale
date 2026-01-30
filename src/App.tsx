@@ -8,6 +8,7 @@ import { Contact } from './pages/Contact';
 import { Login } from './pages/Login';
 import { SignUp } from './pages/SignUp';
 import { NavBar } from './components/NavBar';
+import { Blog } from './pages/Blog';
 
 export default function App() {
   return (
