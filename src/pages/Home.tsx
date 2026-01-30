@@ -139,6 +139,23 @@ export function Home() {
           </div>
         </div>
       </section>
+{/* Blog */}
+<section className="py-20 bg-white">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center">
+      <h2 className="text-3xl lg:text-4xl font-bold text-[#1e3a8a] mb-6">
+        Blog
+      </h2>
+
+      <Link to="/blog">
+        <Button size="lg" className="bg-[#1e3a8a] hover:bg-[#1e40af] text-white">
+          Visit Blog
+          <ArrowRight className="ml-2 h-5 w-5" />
+        </Button>
+      </Link>
+    </div>
+  </div>
+</section>
 
       {/* Why Choose Us */}
       <section className="py-20 bg-white">
