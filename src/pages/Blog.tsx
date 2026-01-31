@@ -44,17 +44,19 @@ export default function Blog() {
               Reading Material
             </h2>
 
-            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm mb-10">
+            {/* Reading container */}
+            <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm mb-12">
               <iframe
                 src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
                 title="Generating and Analyzing HTML Reports in JMeter"
-                className="w-full min-h-[85vh]"
+                className="w-full min-h-[110vh]"
               />
             </div>
 
-            <div className="flex justify-center">
+            {/* Download button (left + larger) */}
+            <div className="flex justify-start">
               <Button
-                className="px-8 py-5 text-lg"
+                className="px-10 py-6 text-lg"
                 onClick={() =>
                   handleDownload("/pdfs/Webtours_Test_Fragment_Manisha.pdf")
                 }
@@ -72,17 +74,19 @@ export default function Blog() {
               Reading Material
             </h2>
 
-            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm mb-10">
+            {/* Reading container */}
+            <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm mb-12">
               <iframe
                 src="/docs/The 7 Most Useful JMeter Plugins.htm"
                 title="The 7 Most Useful JMeter Plugins"
-                className="w-full min-h-[85vh]"
+                className="w-full min-h-[110vh]"
               />
             </div>
 
-            <div className="flex justify-center">
+            {/* Download button (left + larger) */}
+            <div className="flex justify-start">
               <Button
-                className="px-8 py-5 text-lg"
+                className="px-10 py-6 text-lg"
                 onClick={() =>
                   handleDownload("/pdfs/JMeter Perfmon Integration_Manisha.pdf")
                 }
@@ -96,4 +100,5 @@ export default function Blog() {
     </div>
   );
 }
+
 
