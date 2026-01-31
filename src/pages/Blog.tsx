@@ -17,11 +17,11 @@ export default function Blog() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-14">
+    <div className="min-h-screen bg-gray-50 px-6 py-10">
       <div className="max-w-7xl mx-auto">
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-10">
+        <div className="flex gap-4 mb-6">
           <Button
             variant={activeTab === "manual" ? "default" : "outline"}
             onClick={() => setActiveTab("manual")}
@@ -40,21 +40,21 @@ export default function Blog() {
         {/* ================= Manual Testers ================= */}
         {activeTab === "manual" && (
           <>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
               Reading Material
             </h2>
 
-            {/* Reading container */}
-            <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm mb-12">
+            {/* Reading material — fully stretched */}
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
               <iframe
                 src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
                 title="Generating and Analyzing HTML Reports in JMeter"
-                className="w-full min-h-[110vh]"
+                className="w-full min-h-[140vh]"
               />
             </div>
 
-            {/* Download button (left + larger) */}
-            <div className="flex justify-start">
+            {/* Download button — directly after document */}
+            <div className="flex justify-start mt-2">
               <Button
                 className="px-10 py-6 text-lg"
                 onClick={() =>
@@ -70,21 +70,19 @@ export default function Blog() {
         {/* ================= Automation Architects ================= */}
         {activeTab === "automation" && (
           <>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
               Reading Material
             </h2>
 
-            {/* Reading container */}
-            <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm mb-12">
+            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
               <iframe
                 src="/docs/The 7 Most Useful JMeter Plugins.htm"
                 title="The 7 Most Useful JMeter Plugins"
-                className="w-full min-h-[110vh]"
+                className="w-full min-h-[140vh]"
               />
             </div>
 
-            {/* Download button (left + larger) */}
-            <div className="flex justify-start">
+            <div className="flex justify-start mt-2">
               <Button
                 className="px-10 py-6 text-lg"
                 onClick={() =>
