@@ -17,7 +17,7 @@ export default function Blog() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-10">
+    <div className="min-h-screen bg-gray-50 px-6 py-8">
       <div className="max-w-7xl mx-auto">
 
         {/* Tabs */}
@@ -28,7 +28,6 @@ export default function Blog() {
           >
             Manual Testers
           </Button>
-
           <Button
             variant={activeTab === "automation" ? "default" : "outline"}
             onClick={() => setActiveTab("automation")}
@@ -37,24 +36,19 @@ export default function Blog() {
           </Button>
         </div>
 
-        {/* ================= Manual Testers ================= */}
+        {/* ========== MANUAL TESTERS ========== */}
         {activeTab === "manual" && (
           <>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-              Reading Material
-            </h2>
-
-            {/* Reading material — fully stretched */}
-            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
               <iframe
                 src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
-                title="Generating and Analyzing HTML Reports in JMeter"
-                className="w-full min-h-[140vh]"
+                title="HTML Reports in JMeter"
+                className="w-full h-[160vh] block"
               />
             </div>
 
-            {/* Download button — directly after document */}
-            <div className="flex justify-start mt-2">
+            {/* Button pulled up */}
+            <div className="-mt-10">
               <Button
                 className="px-10 py-6 text-lg"
                 onClick={() =>
@@ -67,22 +61,18 @@ export default function Blog() {
           </>
         )}
 
-        {/* ================= Automation Architects ================= */}
+        {/* ========== AUTOMATION ARCHITECTS ========== */}
         {activeTab === "automation" && (
           <>
-            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
-              Reading Material
-            </h2>
-
-            <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+            <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
               <iframe
                 src="/docs/The 7 Most Useful JMeter Plugins.htm"
-                title="The 7 Most Useful JMeter Plugins"
-                className="w-full min-h-[140vh]"
+                title="JMeter Plugins"
+                className="w-full h-[160vh] block"
               />
             </div>
 
-            <div className="flex justify-start mt-2">
+            <div className="-mt-10">
               <Button
                 className="px-10 py-6 text-lg"
                 onClick={() =>
@@ -98,5 +88,6 @@ export default function Blog() {
     </div>
   );
 }
+
 
 
