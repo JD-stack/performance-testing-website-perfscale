@@ -12,13 +12,30 @@ export function NavBar() {
   const navigate = useNavigate();
   const [account, setAccount] = useState<Account | null>(null);
 
-  // 🔄 Sync auth state from localStorage
   useEffect(() => {
-    const storedAccount = localStorage.getItem("account");
-    if (storedAccount) {
-      setAccount(JSON.parse(storedAccount));
-    }
-  }, []);
+  const syncAuth = () => {
+    const stored = localStorage.getItem("account");
+    setAccount(stored ? JSON.parse(stored) : null);
+  };
+
+  syncAuth(); // initial load
+
+  window.addEventListener("auth-change", syncAuth);
+  window.addEventListener("storage", syncAuth);
+
+  return () => {
+    window.removeEventListener("auth-change", syncAuth);
+    window.removeEventListener("storage", syncAuth);
+  };
+}, []);
+
+  // 🔄 Sync auth state from localStorage
+//  useEffect(() => {
+   // const storedAccount = localStorage.getItem("account");
+    //if (storedAccount) {
+      //setAccount(JSON.parse(storedAccount));
+    //}
+  //}, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
