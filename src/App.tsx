@@ -9,39 +9,36 @@ import { Login } from './pages/Login';
 import { SignUp } from './pages/SignUp';
 import { NavBar } from './components/NavBar';
 import Blog from './pages/Blog';
+import { AdminDashboard } from './pages/AdminDashboard';
 
 export default function App() {
   return (
     <Router>
       <div className="flex flex-col min-h-screen">
-        <Routes>
-          {/* Auth pages with different layout */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          
-          {/* Main pages with navigation and footer */}
-          <Route
-            path="/*"
-            element={
-              <>
-                <NavBar />
-                <main className="flex-grow">
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/services" element={<Services />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/blog" element={<Blog />} />
+        <NavBar />
 
-                  </Routes>
-                </main>
-                <Footer />
-              </>
-            }
-          />
-        </Routes>
+        <main className="flex-grow">
+          <Routes>
+            {/* Public pages */}
+            <Route path="/" element={<Home />} />
+            <Route path="/services" element={<Services />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/blog" element={<Blog />} />
+
+            {/* Auth pages */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+
+            {/* Admin page */}
+            <Route path="/admin" element={<AdminDashboard />} />
+          </Routes>
+        </main>
+
+        <Footer />
         <Toaster />
       </div>
     </Router>
   );
 }
+
