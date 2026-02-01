@@ -12,6 +12,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 export function Login() {
   const navigate = useNavigate();
 
+  const [isAdmin, setIsAdmin] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -20,8 +21,12 @@ export function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const endpoint = isAdmin
+      ? `${API_URL}/api/auth/admin/login`
+      : `${API_URL}/api/auth/login`;
+
     try {
-      const response = await fetch(`${API_URL}/api/auth/login`, {
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
@@ -34,26 +39,16 @@ export function Login() {
         return;
       }
 
-      // ✅ supports both user & admin
       const account = data.user || data.admin;
-
-      if (!account || !data.token) {
-        toast.error('Invalid login response');
-        return;
-      }
 
       localStorage.setItem('token', data.token);
       localStorage.setItem('account', JSON.stringify(account));
       localStorage.setItem('role', account.role);
       window.dispatchEvent(new Event("auth-change"));
+
       toast.success('Login successful!');
 
-      // ✅ role-based redirect
-      if (account.role === 'admin') {
-        navigate('/admin');
-      } else {
-        navigate('/');
-      }
+      navigate(account.role === 'admin' ? '/admin' : '/');
 
     } catch {
       toast.error('Server error. Please try again.');
@@ -77,18 +72,40 @@ export function Login() {
             </div>
             <span className="text-3xl font-bold text-white">PerfScale</span>
           </Link>
-          <p className="text-blue-100 mt-2">Welcome back!</p>
+          <p className="text-blue-100 mt-2">
+            {isAdmin ? 'Admin Login' : 'User Login'}
+          </p>
         </div>
 
         <Card className="border-none shadow-2xl">
           <CardHeader>
-            <CardTitle className="text-2xl text-center">Login</CardTitle>
+            <CardTitle className="text-2xl text-center">
+              {isAdmin ? 'Admin Login' : 'Login'}
+            </CardTitle>
             <CardDescription className="text-center">
               Enter your credentials to continue
             </CardDescription>
           </CardHeader>
 
           <CardContent>
+            {/* TOGGLE */}
+            <div className="flex justify-center gap-4 mb-4">
+              <Button
+                type="button"
+                variant={!isAdmin ? "default" : "outline"}
+                onClick={() => setIsAdmin(false)}
+              >
+                User
+              </Button>
+              <Button
+                type="button"
+                variant={isAdmin ? "default" : "outline"}
+                onClick={() => setIsAdmin(true)}
+              >
+                Admin
+              </Button>
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <Label>Email</Label>
@@ -117,12 +134,14 @@ export function Login() {
               </Button>
             </form>
 
-            <div className="mt-6 text-center text-sm">
-              <span className="text-gray-600">Don’t have an account? </span>
-              <Link to="/signup" className="text-[#3b82f6] font-medium">
-                Sign up
-              </Link>
-            </div>
+            {!isAdmin && (
+              <div className="mt-6 text-center text-sm">
+                <span className="text-gray-600">Don’t have an account? </span>
+                <Link to="/signup" className="text-[#3b82f6] font-medium">
+                  Sign up
+                </Link>
+              </div>
+            )}
           </CardContent>
         </Card>
       </div>
