@@ -2,27 +2,30 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 
-type User = {
-  name: string;
+type Account = {
+  name?: string;
   email: string;
+  role: "user" | "admin";
 };
 
 export function NavBar() {
-  const [user, setUser] = useState<User | null>(null);
-
-  // 🔄 Sync user from localStorage
-  useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    setUser(storedUser ? JSON.parse(storedUser) : null);
-  }, []);
-
   const navigate = useNavigate();
+  const [account, setAccount] = useState<Account | null>(null);
+
+  // 🔄 Sync auth state from localStorage
+  useEffect(() => {
+    const storedAccount = localStorage.getItem("account");
+    if (storedAccount) {
+      setAccount(JSON.parse(storedAccount));
+    }
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setUser(null); // 🔥 forces re-render
-    navigate("/");
+    localStorage.removeItem("account");
+    localStorage.removeItem("role");
+    setAccount(null);
+    navigate("/login");
   };
 
   return (
@@ -35,9 +38,9 @@ export function NavBar() {
         <Link to="/">Home</Link>
         <Link to="/services">Services</Link>
         <Link to="/about">About</Link>
-         <Link to="/blog">Blog</Link>
+        <Link to="/blog">Blog</Link>
 
-        {!user ? (
+        {!account ? (
           <>
             <Link to="/login">Login</Link>
             <Link to="/signup">
@@ -47,8 +50,17 @@ export function NavBar() {
         ) : (
           <div className="flex items-center gap-4">
             <span className="font-medium text-gray-700">
-              Hello, {user.name}
+              {account.role === "admin"
+                ? "Admin"
+                : `Hello, ${account.name}`}
             </span>
+
+            {account.role === "admin" && (
+              <Link to="/admin">
+                <Button variant="outline">Dashboard</Button>
+              </Link>
+            )}
+
             <Button variant="outline" onClick={handleLogout}>
               Logout
             </Button>
@@ -58,3 +70,4 @@ export function NavBar() {
     </nav>
   );
 }
+
