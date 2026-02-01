@@ -10,6 +10,9 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use("/api/blogs", require("./routes/blogs"));
+app.use("/uploads", express.static("uploads"));
+
 
 // Health check
 app.get("/", (req, res) => {
@@ -35,5 +38,8 @@ mongoose
     console.error("MongoDB connection failed:", err);
     process.exit(1); // Crash instead of half-running
   });
+
+
+
 
 
