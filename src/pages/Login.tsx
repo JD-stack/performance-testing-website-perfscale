@@ -45,7 +45,7 @@ export function Login() {
       localStorage.setItem('token', data.token);
       localStorage.setItem('account', JSON.stringify(account));
       localStorage.setItem('role', account.role);
-
+      window.dispatchEvent(new Event("auth-change"));
       toast.success('Login successful!');
 
       // ✅ role-based redirect
