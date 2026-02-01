@@ -31,7 +31,7 @@ router.post("/signup", async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role: "user"
+      role: "user" // 👈 default role
     });
 
     await user.save();
@@ -49,16 +49,29 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
+    console.log("USER LOGIN EMAIL:", email);
+
     if (!email || !password) {
       return res.status(400).json({ message: "Email and password are required" });
     }
 
     const user = await User.findOne({ email });
-    if (!user || user.role !== "user") {
+    console.log("USER FOUND:", user);
+
+    if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
+    // 🚫 Block admins from user login
+    if (user.role !== "user") {
+      return res.status(403).json({
+        message: "Please use admin login"
+      });
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
+    console.log("USER PASSWORD MATCH:", isMatch);
+
     if (!isMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
@@ -90,12 +103,18 @@ router.post("/admin/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const admin = await User.findOne({ email, role: "admin" });
-    if (!admin) {
+    console.log("ADMIN LOGIN EMAIL:", email);
+
+    const admin = await User.findOne({ email });
+    console.log("ADMIN FOUND:", admin);
+
+    if (!admin || admin.role !== "admin") {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
     const isMatch = await bcrypt.compare(password, admin.password);
+    console.log("ADMIN PASSWORD MATCH:", isMatch);
+
     if (!isMatch) {
       return res.status(401).json({ message: "Unauthorized" });
     }
@@ -122,6 +141,8 @@ router.post("/admin/login", async (req, res) => {
 });
 
 module.exports = router;
+
+
 
 
 
