@@ -17,32 +17,48 @@ export function Login() {
     password: ''
   });
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  try {
-    const response = await fetch(`${API_URL}/api/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData)
-    });
+    try {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (!response.ok) {
-      toast.error(data.message || 'Login failed');
-      return;
+      if (!response.ok) {
+        toast.error(data.message || 'Login failed');
+        return;
+      }
+
+      // ✅ supports both user & admin
+      const account = data.user || data.admin;
+
+      if (!account || !data.token) {
+        toast.error('Invalid login response');
+        return;
+      }
+
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('account', JSON.stringify(account));
+      localStorage.setItem('role', account.role);
+
+      toast.success('Login successful!');
+
+      // ✅ role-based redirect
+      if (account.role === 'admin') {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
+
+    } catch {
+      toast.error('Server error. Please try again.');
     }
-
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify(data.user));
-
-    toast.success('Login successful!');
-    navigate('/');
-  } catch {
-    toast.error('Server error. Please try again.');
-  }
-};
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
@@ -113,3 +129,4 @@ const handleSubmit = async (e: React.FormEvent) => {
     </div>
   );
 }
+
