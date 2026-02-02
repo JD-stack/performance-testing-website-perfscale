@@ -13,6 +13,7 @@ export function AdminDashboard() {
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("token");
 
+  // 🔒 Protect route
   useEffect(() => {
     if (role !== "admin" || !token) {
       navigate("/login");
@@ -21,6 +22,7 @@ export function AdminDashboard() {
 
   const [title, setTitle] = useState("");
   const [pdf, setPdf] = useState<File | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = async (e: React.FormEvent) => {
@@ -44,22 +46,27 @@ export function AdminDashboard() {
         body: formData,
       });
 
-      if (!res.ok) throw new Error();
+      const data = await res.json();
 
-      toast.success("PDF uploaded successfully");
+      if (!res.ok) {
+        toast.error(data.message || "Upload failed");
+        return;
+      }
+
+      toast.success("PDF uploaded successfully!");
       setTitle("");
       setPdf(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
+
     } catch {
-      toast.error("Upload failed");
+      toast.error("Server error during upload");
     }
   };
 
   return (
-    // 🔥 FORCE CENTERING — BREAKS OUT OF LAYOUT
-    <div className="fixed inset-0 z-10 bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] flex items-center justify-center px-4">
-
-      <Card className="w-full max-w-md shadow-2xl border-none rounded-2xl">
+    <div className="min-h-screen bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] flex items-center justify-center px-4">
+      
+      <Card className="w-full max-w-lg border-none shadow-2xl">
         <CardHeader>
           <CardTitle className="text-center text-2xl text-[#1e3a8a]">
             Admin Dashboard
@@ -71,19 +78,23 @@ export function AdminDashboard() {
 
             {/* Blog Title */}
             <div>
-              <Label>Blog Title</Label>
+              <Label className="text-sm font-medium">Blog Title</Label>
               <Input
                 placeholder="Enter blog title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                className="mt-1"
                 required
               />
             </div>
 
-            {/* Upload PDF */}
+            {/* PDF Upload */}
             <div>
-              <Label className="block mb-2">Upload PDF</Label>
+              <Label className="text-sm font-medium mb-2 block">
+                Upload PDF
+              </Label>
 
+              {/* Hidden native input */}
               <input
                 ref={fileInputRef}
                 type="file"
@@ -92,16 +103,16 @@ export function AdminDashboard() {
                 onChange={(e) => setPdf(e.target.files?.[0] || null)}
               />
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 <Button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="bg-[#1e3a8a] hover:bg-[#1e40af]"
+                  className="bg-[#1e3a8a] hover:bg-[#1e40af] text-white px-6"
                 >
                   Choose file from system
                 </Button>
 
-                <span className="text-sm text-gray-200 truncate max-w-[160px]">
+                <span className="text-sm text-gray-600 truncate">
                   {pdf ? pdf.name : "No file selected"}
                 </span>
               </div>
@@ -110,7 +121,7 @@ export function AdminDashboard() {
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white py-5 text-lg"
+              className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white py-6 text-lg"
             >
               Upload PDF
             </Button>
@@ -121,6 +132,5 @@ export function AdminDashboard() {
     </div>
   );
 }
-
 
 
