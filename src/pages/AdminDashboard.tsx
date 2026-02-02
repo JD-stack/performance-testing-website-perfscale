@@ -80,16 +80,32 @@ export function AdminDashboard() {
               />
             </div>
 
+            {/* ✅ Custom Upload Button */}
             <div>
               <Label>Upload PDF</Label>
-              <Input
+
+              <input
                 type="file"
                 accept="application/pdf"
-                onChange={(e) =>
-                  setPdf(e.target.files?.[0] || null)
-                }
-                required
+                id="pdf-upload"
+                hidden
+                onChange={(e) => setPdf(e.target.files?.[0] || null)}
               />
+
+              <label htmlFor="pdf-upload">
+                <Button
+                  type="button"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                >
+                  Choose PDF
+                </Button>
+              </label>
+
+              {pdf && (
+                <p className="mt-2 text-sm text-gray-600">
+                  Selected: <span className="font-medium">{pdf.name}</span>
+                </p>
+              )}
             </div>
 
             <Button type="submit" className="w-full">
@@ -101,3 +117,4 @@ export function AdminDashboard() {
     </div>
   );
 }
+
