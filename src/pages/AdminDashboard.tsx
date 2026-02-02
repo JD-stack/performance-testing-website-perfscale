@@ -70,7 +70,9 @@ export function AdminDashboard() {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleUpload} className="space-y-4">
+          <form onSubmit={handleUpload} className="space-y-5">
+
+            {/* Blog title */}
             <div>
               <Label>Blog Title</Label>
               <Input
@@ -80,10 +82,11 @@ export function AdminDashboard() {
               />
             </div>
 
-            {/* ✅ Custom Upload Button */}
+            {/* PDF upload */}
             <div>
               <Label>Upload PDF</Label>
 
+              {/* Hidden file input */}
               <input
                 type="file"
                 accept="application/pdf"
@@ -92,29 +95,39 @@ export function AdminDashboard() {
                 onChange={(e) => setPdf(e.target.files?.[0] || null)}
               />
 
+              {/* Choose PDF button */}
               <label htmlFor="pdf-upload">
                 <Button
                   type="button"
-                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                  variant="outline"
+                  className="w-full border-blue-600 text-blue-600 hover:bg-blue-50"
                 >
                   Choose PDF
                 </Button>
               </label>
 
+              {/* Selected file name */}
               {pdf && (
                 <p className="mt-2 text-sm text-gray-600">
-                  Selected: <span className="font-medium">{pdf.name}</span>
+                  Selected file:{" "}
+                  <span className="font-medium">{pdf.name}</span>
                 </p>
               )}
             </div>
 
-            <Button type="submit" className="w-full">
+            {/* Submit */}
+            <Button
+              type="submit"
+              className="w-full bg-blue-700 hover:bg-blue-800"
+            >
               Upload PDF
             </Button>
+
           </form>
         </CardContent>
       </Card>
     </div>
   );
 }
+
 
