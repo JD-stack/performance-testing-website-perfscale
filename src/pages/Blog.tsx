@@ -63,7 +63,7 @@ export default function Blog() {
             <iframe
               src="/docs/The 7 Most Useful JMeter Plugins.htm"
               title="JMeter Plugins"
-              className="w-full h-[85vh] border-t"
+              className="w-full h-[90vh] border-0"
             />
 
             <div className="px-6 py-6">
