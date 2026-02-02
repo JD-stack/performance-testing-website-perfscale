@@ -66,7 +66,7 @@ export function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] flex items-center justify-center">
       
-      <Card className="w-full max-w-lg border-none shadow-2xl">
+      <Card className="w-full max-w-md border-none shadow-2xl">
         <CardHeader>
           <CardTitle className="text-center text-2xl text-[#1e3a8a]">
             Admin Dashboard
