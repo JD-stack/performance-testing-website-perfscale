@@ -21,7 +21,7 @@ export default function Blog() {
       <div className="max-w-7xl mx-auto">
 
         {/* Tabs */}
-        <div className="flex gap-4 mb-10">
+        <div className="flex gap-4 mb-6">
           <Button
             variant={activeTab === "manual" ? "default" : "outline"}
             onClick={() => setActiveTab("manual")}
@@ -42,7 +42,7 @@ export default function Blog() {
             <iframe
               src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
               title="HTML Reports in JMeter"
-              className="w-full h-[1000vh] border rounded-lg"
+              className="w-full h-[calc(100vh-180px)] border rounded-lg"
             />
 
             <div className="mt-6">
@@ -64,7 +64,7 @@ export default function Blog() {
             <iframe
               src="/docs/The 7 Most Useful JMeter Plugins.htm"
               title="JMeter Plugins"
-              className="w-full h-1000vh] border rounded-lg"
+              className="w-full h-[calc(100vh-180px)] border rounded-lg"
             />
 
             <div className="mt-6">
@@ -83,6 +83,7 @@ export default function Blog() {
     </div>
   );
 }
+
 
 
 
