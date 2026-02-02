@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -13,7 +13,8 @@ export function AdminDashboard() {
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("token");
 
-  // 🔒 Protect route
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   useEffect(() => {
     if (role !== "admin" || !token) {
       navigate("/login");
@@ -55,6 +56,9 @@ export function AdminDashboard() {
       setTitle("");
       setPdf(null);
 
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     } catch {
       toast.error("Server error during upload");
     }
@@ -72,7 +76,7 @@ export function AdminDashboard() {
         <CardContent>
           <form onSubmit={handleUpload} className="space-y-5">
 
-            {/* Blog title */}
+            {/* Blog Title */}
             <div>
               <Label>Blog Title</Label>
               <Input
@@ -82,31 +86,29 @@ export function AdminDashboard() {
               />
             </div>
 
-            {/* PDF upload */}
+            {/* Upload PDF */}
             <div>
               <Label>Upload PDF</Label>
 
-              {/* Hidden file input */}
+              {/* Hidden input */}
               <input
+                ref={fileInputRef}
                 type="file"
                 accept="application/pdf"
-                id="pdf-upload"
                 hidden
                 onChange={(e) => setPdf(e.target.files?.[0] || null)}
               />
 
-              {/* Choose PDF button */}
-              <label htmlFor="pdf-upload">
-                <Button
-                  type="button"
-                  variant="outline"
-                  className="w-full border-blue-600 text-blue-600 hover:bg-blue-50"
-                >
-                  Choose PDF
-                </Button>
-              </label>
+              {/* Trigger button */}
+              <Button
+                type="button"
+                className="w-full bg-blue-600 hover:bg-blue-700"
+                onClick={() => fileInputRef.current?.click()}
+              >
+                Choose PDF
+              </Button>
 
-              {/* Selected file name */}
+              {/* File name */}
               {pdf && (
                 <p className="mt-2 text-sm text-gray-600">
                   Selected file:{" "}
@@ -118,7 +120,7 @@ export function AdminDashboard() {
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full bg-blue-700 hover:bg-blue-800"
+              className="w-full bg-blue-800 hover:bg-blue-900"
             >
               Upload PDF
             </Button>
@@ -129,5 +131,6 @@ export function AdminDashboard() {
     </div>
   );
 }
+
 
 
