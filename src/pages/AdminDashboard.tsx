@@ -13,7 +13,6 @@ export function AdminDashboard() {
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("token");
 
-  // 🔒 Protect route
   useEffect(() => {
     if (role !== "admin" || !token) {
       navigate("/login");
@@ -22,7 +21,6 @@ export function AdminDashboard() {
 
   const [title, setTitle] = useState("");
   const [pdf, setPdf] = useState<File | null>(null);
-
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleUpload = async (e: React.FormEvent) => {
@@ -40,24 +38,20 @@ export function AdminDashboard() {
     try {
       const res = await fetch(`${API_URL}/api/blogs/upload`, {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
       const data = await res.json();
-
       if (!res.ok) {
         toast.error(data.message || "Upload failed");
         return;
       }
 
-      toast.success("PDF uploaded successfully!");
+      toast.success("PDF uploaded successfully");
       setTitle("");
       setPdf(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
-
     } catch {
       toast.error("Server error during upload");
     }
@@ -66,7 +60,8 @@ export function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] flex items-center justify-center px-4">
       
-      <Card className="w-full max-w-lg border-none shadow-2xl">
+      {/* Same width & feel as Login */}
+      <Card className="w-full max-w-md border-none shadow-2xl">
         <CardHeader>
           <CardTitle className="text-center text-2xl text-[#1e3a8a]">
             Admin Dashboard
@@ -74,27 +69,23 @@ export function AdminDashboard() {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleUpload} className="space-y-6">
+          <form onSubmit={handleUpload} className="space-y-5">
 
-            {/* Blog Title */}
+            {/* Blog title */}
             <div>
-              <Label className="text-sm font-medium">Blog Title</Label>
+              <Label>Blog Title</Label>
               <Input
                 placeholder="Enter blog title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="mt-1"
                 required
               />
             </div>
 
-            {/* PDF Upload */}
+            {/* File upload */}
             <div>
-              <Label className="text-sm font-medium mb-2 block">
-                Upload PDF
-              </Label>
+              <Label className="mb-2 block">Upload PDF</Label>
 
-              {/* Hidden native input */}
               <input
                 ref={fileInputRef}
                 type="file"
@@ -103,7 +94,7 @@ export function AdminDashboard() {
                 onChange={(e) => setPdf(e.target.files?.[0] || null)}
               />
 
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col items-center gap-2">
                 <Button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
@@ -112,7 +103,7 @@ export function AdminDashboard() {
                   Choose file from system
                 </Button>
 
-                <span className="text-sm text-gray-600 truncate">
+                <span className="text-xs text-gray-600">
                   {pdf ? pdf.name : "No file selected"}
                 </span>
               </div>
@@ -132,6 +123,7 @@ export function AdminDashboard() {
     </div>
   );
 }
+
 
 
 
