@@ -67,7 +67,7 @@ export function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
       <Card className="w-full max-w-md border border-blue-200 shadow-2xl">
-        
+
         {/* Header */}
         <CardHeader className="bg-gradient-to-r from-[#1e3a8a] to-[#1e40af] rounded-t-lg">
           <CardTitle className="text-center text-xl text-white">
@@ -102,7 +102,6 @@ export function AdminDashboard() {
                 Upload PDF
               </Label>
 
-              {/* Hidden input */}
               <input
                 ref={fileInputRef}
                 type="file"
@@ -111,19 +110,18 @@ export function AdminDashboard() {
                 onChange={(e) => setPdf(e.target.files?.[0] || null)}
               />
 
-              {/* Upload area */}
-              <div className="mt-2 flex flex-col gap-3">
+              <div className="mt-3 flex flex-col items-center gap-3">
                 <Button
                   type="button"
-                  className="bg-[#1e3a8a] hover:bg-[#1e40af] text-white"
+                  className="px-6 py-2 bg-[#1e3a8a] hover:bg-[#1e40af] text-white"
                   onClick={() => fileInputRef.current?.click()}
                 >
-                  Choose PDF from Computer
+                  Choose file from system
                 </Button>
 
                 {pdf ? (
-                  <div className="text-sm bg-blue-50 border border-blue-200 rounded-md p-2 text-blue-800">
-                    Selected file: <strong>{pdf.name}</strong>
+                  <div className="text-sm bg-blue-50 border border-blue-200 rounded-md px-3 py-1 text-blue-800">
+                    Selected: <strong>{pdf.name}</strong>
                   </div>
                 ) : (
                   <div className="text-sm text-gray-500">
@@ -134,12 +132,14 @@ export function AdminDashboard() {
             </div>
 
             {/* Submit */}
-            <Button
-              type="submit"
-              className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white text-lg py-6"
-            >
-              Upload PDF
-            </Button>
+            <div className="flex justify-center">
+              <Button
+                type="submit"
+                className="px-8 py-3 bg-[#1e3a8a] hover:bg-[#1e40af] text-white"
+              >
+                Upload PDF
+              </Button>
+            </div>
 
           </form>
         </CardContent>
