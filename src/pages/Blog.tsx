@@ -17,11 +17,11 @@ export default function Blog() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 px-6 py-10">
-      <div className="max-w-7xl mx-auto">
-
-        {/* Tabs */}
-        <div className="flex gap-4 mb-6">
+    <div className="min-h-screen bg-gray-50">
+      
+      {/* Tabs Header */}
+      <div className="bg-white border-b">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex gap-4">
           <Button
             variant={activeTab === "manual" ? "default" : "outline"}
             onClick={() => setActiveTab("manual")}
@@ -35,19 +35,23 @@ export default function Blog() {
             Automation Architects
           </Button>
         </div>
+      </div>
 
-        {/* ========== MANUAL TESTERS ========== */}
+      {/* Content Area */}
+      <div className="max-w-7xl mx-auto px-6 py-6">
         {activeTab === "manual" && (
-          <article className="max-w-7xl mx-auto">
-            <iframe
-              src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
-              title="HTML Reports in JMeter"
-              className="w-full h-[calc(100vh-180px)] border rounded-lg"
-            />
+          <>
+            <div className="w-full">
+              <iframe
+                src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
+                title="HTML Reports in JMeter"
+                className="w-full min-h-[1400px] border rounded-lg bg-white"
+              />
+            </div>
 
-            <div className="mt-6">
+            <div className="mt-8">
               <Button
-                className="px-10 py-6 text-lg"
+                className="px-8 py-5 text-lg"
                 onClick={() =>
                   handleDownload("/pdfs/Webtours_Test_Fragment_Manisha.pdf")
                 }
@@ -55,21 +59,22 @@ export default function Blog() {
                 Download PDF
               </Button>
             </div>
-          </article>
+          </>
         )}
 
-        {/* ========== AUTOMATION ARCHITECTS ========== */}
         {activeTab === "automation" && (
-          <article className="max-w-7xl mx-auto">
-            <iframe
-              src="/docs/The 7 Most Useful JMeter Plugins.htm"
-              title="JMeter Plugins"
-              className="w-full h-[calc(100vh-180px)] border rounded-lg"
-            />
+          <>
+            <div className="w-full">
+              <iframe
+                src="/docs/The 7 Most Useful JMeter Plugins.htm"
+                title="JMeter Plugins"
+                className="w-full min-h-[1400px] border rounded-lg bg-white"
+              />
+            </div>
 
-            <div className="mt-6">
+            <div className="mt-8">
               <Button
-                className="px-10 py-6 text-lg"
+                className="px-8 py-5 text-lg"
                 onClick={() =>
                   handleDownload("/pdfs/JMeter Perfmon Integration_Manisha.pdf")
                 }
@@ -77,12 +82,13 @@ export default function Blog() {
                 Download PDF
               </Button>
             </div>
-          </article>
+          </>
         )}
       </div>
     </div>
   );
 }
+
 
 
 
