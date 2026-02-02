@@ -17,8 +17,8 @@ export default function Blog() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      
+    <div className="bg-gray-50 min-h-screen">
+
       {/* Tabs */}
       <div className="px-6 pt-6 flex gap-4">
         <Button
@@ -27,6 +27,7 @@ export default function Blog() {
         >
           Manual Testers
         </Button>
+
         <Button
           variant={activeTab === "automation" ? "default" : "outline"}
           onClick={() => setActiveTab("automation")}
@@ -35,17 +36,23 @@ export default function Blog() {
         </Button>
       </div>
 
-      {/* CONTENT AREA — FULL WIDTH */}
-      <div className="mt-6">
+      {/* CONTENT — PAGE SCROLLS, NOT IFRAME */}
+      <div className="px-6 pt-6 pb-10">
+
         {activeTab === "manual" && (
           <>
             <iframe
               src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
               title="HTML Reports in JMeter"
-              className="w-full h-[85vh] border-t"
+              className="w-full border rounded-lg"
+              style={{
+                height: "140vh",        // ⬅️ intentionally LARGE
+                overflow: "hidden"
+              }}
+              scrolling="no"
             />
 
-            <div className="px-6 py-6">
+            <div className="mt-8">
               <Button
                 className="px-8 py-5 text-lg"
                 onClick={() =>
@@ -63,10 +70,15 @@ export default function Blog() {
             <iframe
               src="/docs/The 7 Most Useful JMeter Plugins.htm"
               title="JMeter Plugins"
-              className="w-full h-[90vh] border-0"
+              className="w-full border rounded-lg"
+              style={{
+                height: "140vh",
+                overflow: "hidden"
+              }}
+              scrolling="no"
             />
 
-            <div className="px-6 py-6">
+            <div className="mt-8">
               <Button
                 className="px-8 py-5 text-lg"
                 onClick={() =>
