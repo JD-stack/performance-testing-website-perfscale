@@ -38,26 +38,14 @@ export default function Blog() {
 
         {/* ========== MANUAL TESTERS ========== */}
         {activeTab === "manual" && (
-          <article className="bg-white rounded-xl shadow-md p-10 max-w-5xl mx-auto">
-
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              Generating and Analyzing HTML Reports in JMeter
-            </h1>
-
-            <p className="text-red-600 text-lg leading-relaxed mb-8">
-              Turning numbers into insights – that’s where JMeter’s HTML reports
-              shine. Instead of digging through raw .jtl or .csv files, you get
-              clean, interactive dashboards that instantly highlight response
-              times, throughput, errors, and more.
-            </p>
-
+          <article className="max-w-7xl mx-auto">
             <iframe
               src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
               title="HTML Reports in JMeter"
-              className="w-full min-h-[120vh] border rounded-lg"
+              className="w-full h-[220vh] border rounded-lg"
             />
 
-            <div className="mt-10">
+            <div className="mt-6">
               <Button
                 className="px-10 py-6 text-lg"
                 onClick={() =>
@@ -72,25 +60,14 @@ export default function Blog() {
 
         {/* ========== AUTOMATION ARCHITECTS ========== */}
         {activeTab === "automation" && (
-          <article className="bg-white rounded-xl shadow-md p-10 max-w-5xl mx-auto">
-
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              The 7 Most Useful JMeter Plugins
-            </h1>
-
-            <p className="text-gray-700 text-lg leading-relaxed mb-8">
-              JMeter plugins extend core functionality and unlock advanced
-              performance insights. From custom listeners to real-time
-              monitoring, plugins make large-scale testing more effective.
-            </p>
-
+          <article className="max-w-7xl mx-auto">
             <iframe
               src="/docs/The 7 Most Useful JMeter Plugins.htm"
               title="JMeter Plugins"
-              className="w-full min-h-[120vh] border rounded-lg"
+              className="w-full h-[220vh] border rounded-lg"
             />
 
-            <div className="mt-10">
+            <div className="mt-6">
               <Button
                 className="px-10 py-6 text-lg"
                 onClick={() =>
@@ -106,6 +83,7 @@ export default function Blog() {
     </div>
   );
 }
+
 
 
 
