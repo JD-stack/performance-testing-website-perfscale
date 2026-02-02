@@ -17,7 +17,7 @@ export default function App() {
       <div className="flex flex-col min-h-screen">
         <NavBar />
 
-        <main className="flex-grow">
+        <main className="flex-grow min-h-screen overflow-visible">
           <Routes>
             {/* Public pages */}
             <Route path="/" element={<Home />} />
