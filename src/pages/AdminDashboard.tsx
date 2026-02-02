@@ -14,7 +14,9 @@ export function AdminDashboard() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (role !== "admin" || !token) navigate("/login");
+    if (role !== "admin" || !token) {
+      navigate("/login");
+    }
   }, [role, token, navigate]);
 
   const [title, setTitle] = useState("");
@@ -36,13 +38,15 @@ export function AdminDashboard() {
     try {
       const res = await fetch(`${API_URL}/api/blogs/upload`, {
         method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         body: formData,
       });
 
       if (!res.ok) throw new Error();
-      toast.success("PDF uploaded successfully");
 
+      toast.success("PDF uploaded successfully");
       setTitle("");
       setPdf(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
@@ -52,10 +56,10 @@ export function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] flex items-center justify-center px-4">
+    // 🔥 FORCE CENTERING — BREAKS OUT OF LAYOUT
+    <div className="fixed inset-0 z-10 bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] flex items-center justify-center px-4">
 
-      {/* CENTERED + SHORTER WIDTH */}
-      <Card className="w-full max-w-lg shadow-2xl border-none">
+      <Card className="w-full max-w-md shadow-2xl border-none rounded-2xl">
         <CardHeader>
           <CardTitle className="text-center text-2xl text-[#1e3a8a]">
             Admin Dashboard
@@ -65,6 +69,7 @@ export function AdminDashboard() {
         <CardContent>
           <form onSubmit={handleUpload} className="space-y-6">
 
+            {/* Blog Title */}
             <div>
               <Label>Blog Title</Label>
               <Input
@@ -75,6 +80,7 @@ export function AdminDashboard() {
               />
             </div>
 
+            {/* Upload PDF */}
             <div>
               <Label className="block mb-2">Upload PDF</Label>
 
@@ -95,12 +101,13 @@ export function AdminDashboard() {
                   Choose file from system
                 </Button>
 
-                <span className="text-sm text-gray-600 truncate max-w-[160px]">
+                <span className="text-sm text-gray-200 truncate max-w-[160px]">
                   {pdf ? pdf.name : "No file selected"}
                 </span>
               </div>
             </div>
 
+            {/* Submit */}
             <Button
               type="submit"
               className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white py-5 text-lg"
@@ -114,6 +121,7 @@ export function AdminDashboard() {
     </div>
   );
 }
+
 
 
 
