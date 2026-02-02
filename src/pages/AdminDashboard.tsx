@@ -65,30 +65,42 @@ export function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center px-4">
-      <Card className="w-full max-w-md shadow-xl">
-        <CardHeader>
-          <CardTitle className="text-center text-xl">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
+      <Card className="w-full max-w-md border border-blue-200 shadow-2xl">
+        
+        {/* Header */}
+        <CardHeader className="bg-gradient-to-r from-[#1e3a8a] to-[#1e40af] rounded-t-lg">
+          <CardTitle className="text-center text-xl text-white">
             Admin Dashboard
           </CardTitle>
+          <p className="text-center text-blue-100 text-sm mt-1">
+            Upload blog PDFs visible to users
+          </p>
         </CardHeader>
 
-        <CardContent>
-          <form onSubmit={handleUpload} className="space-y-5">
+        {/* Content */}
+        <CardContent className="bg-white p-6">
+          <form onSubmit={handleUpload} className="space-y-6">
 
             {/* Blog Title */}
             <div>
-              <Label>Blog Title</Label>
+              <Label className="text-gray-700 font-medium">
+                Blog Title
+              </Label>
               <Input
+                placeholder="Enter blog title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                className="mt-1"
                 required
               />
             </div>
 
             {/* Upload PDF */}
             <div>
-              <Label>Upload PDF</Label>
+              <Label className="text-gray-700 font-medium">
+                Upload PDF
+              </Label>
 
               {/* Hidden input */}
               <input
@@ -99,28 +111,32 @@ export function AdminDashboard() {
                 onChange={(e) => setPdf(e.target.files?.[0] || null)}
               />
 
-              {/* Trigger button */}
-              <Button
-                type="button"
-                className="w-full bg-blue-600 hover:bg-blue-700"
-                onClick={() => fileInputRef.current?.click()}
-              >
-                Choose PDF
-              </Button>
+              {/* Upload area */}
+              <div className="mt-2 flex flex-col gap-3">
+                <Button
+                  type="button"
+                  className="bg-[#1e3a8a] hover:bg-[#1e40af] text-white"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  Choose PDF from Computer
+                </Button>
 
-              {/* File name */}
-              {pdf && (
-                <p className="mt-2 text-sm text-gray-600">
-                  Selected file:{" "}
-                  <span className="font-medium">{pdf.name}</span>
-                </p>
-              )}
+                {pdf ? (
+                  <div className="text-sm bg-blue-50 border border-blue-200 rounded-md p-2 text-blue-800">
+                    Selected file: <strong>{pdf.name}</strong>
+                  </div>
+                ) : (
+                  <div className="text-sm text-gray-500">
+                    No file selected
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Submit */}
             <Button
               type="submit"
-              className="w-full bg-blue-800 hover:bg-blue-900"
+              className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white text-lg py-6"
             >
               Upload PDF
             </Button>
@@ -131,6 +147,4 @@ export function AdminDashboard() {
     </div>
   );
 }
-
-
 
