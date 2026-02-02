@@ -13,8 +13,7 @@ export function AdminDashboard() {
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("token");
 
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
-
+  // 🔒 Protect route
   useEffect(() => {
     if (role !== "admin" || !token) {
       navigate("/login");
@@ -24,11 +23,13 @@ export function AdminDashboard() {
   const [title, setTitle] = useState("");
   const [pdf, setPdf] = useState<File | null>(null);
 
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const handleUpload = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!title || !pdf) {
-      toast.error("Title and PDF are required");
+      toast.error("Blog title and PDF are required");
       return;
     }
 
@@ -55,87 +56,75 @@ export function AdminDashboard() {
       toast.success("PDF uploaded successfully!");
       setTitle("");
       setPdf(null);
+      if (fileInputRef.current) fileInputRef.current.value = "";
 
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
     } catch {
       toast.error("Server error during upload");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-6">
-      <Card className="w-full max-w-lg shadow-2xl border border-blue-200">
-
-        {/* Header */}
-        <CardHeader className="py-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] flex items-center justify-center px-4">
+      
+      <Card className="w-full max-w-lg border-none shadow-2xl">
+        <CardHeader>
           <CardTitle className="text-center text-2xl text-[#1e3a8a]">
             Admin Dashboard
           </CardTitle>
         </CardHeader>
 
-        {/* Content */}
-        <CardContent className="px-10 pb-10">
-          <form onSubmit={handleUpload} className="space-y-8">
+        <CardContent>
+          <form onSubmit={handleUpload} className="space-y-6">
 
             {/* Blog Title */}
-            <div className="space-y-2">
-              <Label className="text-gray-700 font-medium">
-                Blog Title
-              </Label>
+            <div>
+              <Label className="text-sm font-medium">Blog Title</Label>
               <Input
                 placeholder="Enter blog title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                className="mt-1"
                 required
               />
             </div>
 
-            {/* Upload PDF */}
-            <div className="space-y-3">
-              <Label className="text-gray-700 font-medium">
+            {/* PDF Upload */}
+            <div>
+              <Label className="text-sm font-medium mb-2 block">
                 Upload PDF
               </Label>
 
+              {/* Hidden native input */}
               <input
                 ref={fileInputRef}
                 type="file"
                 accept="application/pdf"
-                hidden
+                className="hidden"
                 onChange={(e) => setPdf(e.target.files?.[0] || null)}
               />
 
-              <div className="flex flex-col items-center gap-4">
+              <div className="flex items-center gap-4">
                 <Button
                   type="button"
-                  className="px-6 py-2 bg-[#1e3a8a] hover:bg-[#1e40af] text-white"
                   onClick={() => fileInputRef.current?.click()}
+                  className="bg-[#1e3a8a] hover:bg-[#1e40af] text-white px-6"
                 >
                   Choose file from system
                 </Button>
 
-                {pdf ? (
-                  <span className="text-sm text-blue-700">
-                    Selected: <strong>{pdf.name}</strong>
-                  </span>
-                ) : (
-                  <span className="text-sm text-gray-500">
-                    No file selected
-                  </span>
-                )}
+                <span className="text-sm text-gray-600 truncate">
+                  {pdf ? pdf.name : "No file selected"}
+                </span>
               </div>
             </div>
 
             {/* Submit */}
-            <div className="flex justify-center pt-4">
-              <Button
-                type="submit"
-                className="px-10 py-3 bg-[#1e3a8a] hover:bg-[#1e40af] text-white"
-              >
-                Upload PDF
-              </Button>
-            </div>
+            <Button
+              type="submit"
+              className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white py-6 text-lg"
+            >
+              Upload PDF
+            </Button>
 
           </form>
         </CardContent>
@@ -143,5 +132,6 @@ export function AdminDashboard() {
     </div>
   );
 }
+
 
 
