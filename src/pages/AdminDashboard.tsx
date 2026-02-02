@@ -14,9 +14,7 @@ export function AdminDashboard() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (role !== "admin" || !token) {
-      navigate("/login");
-    }
+    if (role !== "admin" || !token) navigate("/login");
   }, [role, token, navigate]);
 
   const [title, setTitle] = useState("");
@@ -38,9 +36,7 @@ export function AdminDashboard() {
     try {
       const res = await fetch(`${API_URL}/api/blogs/upload`, {
         method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
@@ -56,10 +52,11 @@ export function AdminDashboard() {
   };
 
   return (
-    // 🔥 FORCE CENTERING — BREAKS OUT OF LAYOUT
-    <div className="fixed inset-0 z-10 bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] flex items-center justify-center px-4">
+    /* 🔥 FULL-WIDTH BLUE BACKGROUND — NO LAYOUT LEAKS */
+    <div className="w-screen h-screen bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] flex items-center justify-center">
 
-      <Card className="w-full max-w-md shadow-2xl border-none rounded-2xl">
+      {/* 🔹 CENTERED, NARROW CARD (LOGIN STYLE) */}
+      <Card className="w-full max-w-md shadow-2xl rounded-2xl border-none bg-white">
         <CardHeader>
           <CardTitle className="text-center text-2xl text-[#1e3a8a]">
             Admin Dashboard
@@ -101,7 +98,7 @@ export function AdminDashboard() {
                   Choose file from system
                 </Button>
 
-                <span className="text-sm text-gray-200 truncate max-w-[160px]">
+                <span className="text-sm text-gray-600 truncate max-w-[150px]">
                   {pdf ? pdf.name : "No file selected"}
                 </span>
               </div>
@@ -121,7 +118,6 @@ export function AdminDashboard() {
     </div>
   );
 }
-
 
 
 
