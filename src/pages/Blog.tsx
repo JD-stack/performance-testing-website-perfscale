@@ -42,7 +42,7 @@ export default function Blog() {
             <iframe
               src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
               title="HTML Reports in JMeter"
-              className="w-full h-[220vh] border rounded-lg"
+              className="w-full h-[1000vh] border rounded-lg"
             />
 
             <div className="mt-6">
@@ -64,7 +64,7 @@ export default function Blog() {
             <iframe
               src="/docs/The 7 Most Useful JMeter Plugins.htm"
               title="JMeter Plugins"
-              className="w-full h-[220vh] border rounded-lg"
+              className="w-full h-1000vh] border rounded-lg"
             />
 
             <div className="mt-6">
