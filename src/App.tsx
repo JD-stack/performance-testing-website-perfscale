@@ -14,7 +14,7 @@ import { AdminDashboard } from './pages/AdminDashboard';
 export default function App() {
   return (
     <Router>
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen overflow-visible">
         <NavBar />
 
         <main className="flex-grow min-h-screen overflow-visible">
