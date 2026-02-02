@@ -14,9 +14,7 @@ export function AdminDashboard() {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (role !== "admin" || !token) {
-      navigate("/login");
-    }
+    if (role !== "admin" || !token) navigate("/login");
   }, [role, token, navigate]);
 
   const [title, setTitle] = useState("");
@@ -42,26 +40,22 @@ export function AdminDashboard() {
         body: formData,
       });
 
-      const data = await res.json();
-      if (!res.ok) {
-        toast.error(data.message || "Upload failed");
-        return;
-      }
-
+      if (!res.ok) throw new Error();
       toast.success("PDF uploaded successfully");
+
       setTitle("");
       setPdf(null);
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch {
-      toast.error("Server error during upload");
+      toast.error("Upload failed");
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] flex items-center justify-center px-4">
-      
-      {/* Same width & feel as Login */}
-      <Card className="w-full max-w-md border-none shadow-2xl">
+
+      {/* CENTERED + SHORTER WIDTH */}
+      <Card className="w-full max-w-lg shadow-2xl border-none">
         <CardHeader>
           <CardTitle className="text-center text-2xl text-[#1e3a8a]">
             Admin Dashboard
@@ -69,9 +63,8 @@ export function AdminDashboard() {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleUpload} className="space-y-5">
+          <form onSubmit={handleUpload} className="space-y-6">
 
-            {/* Blog title */}
             <div>
               <Label>Blog Title</Label>
               <Input
@@ -82,9 +75,8 @@ export function AdminDashboard() {
               />
             </div>
 
-            {/* File upload */}
             <div>
-              <Label className="mb-2 block">Upload PDF</Label>
+              <Label className="block mb-2">Upload PDF</Label>
 
               <input
                 ref={fileInputRef}
@@ -94,25 +86,24 @@ export function AdminDashboard() {
                 onChange={(e) => setPdf(e.target.files?.[0] || null)}
               />
 
-              <div className="flex flex-col items-center gap-2">
+              <div className="flex items-center gap-3">
                 <Button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="bg-[#1e3a8a] hover:bg-[#1e40af] text-white px-6"
+                  className="bg-[#1e3a8a] hover:bg-[#1e40af]"
                 >
                   Choose file from system
                 </Button>
 
-                <span className="text-xs text-gray-600">
+                <span className="text-sm text-gray-600 truncate max-w-[160px]">
                   {pdf ? pdf.name : "No file selected"}
                 </span>
               </div>
             </div>
 
-            {/* Submit */}
             <Button
               type="submit"
-              className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white py-6 text-lg"
+              className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white py-5 text-lg"
             >
               Upload PDF
             </Button>
@@ -123,7 +114,6 @@ export function AdminDashboard() {
     </div>
   );
 }
-
 
 
 
