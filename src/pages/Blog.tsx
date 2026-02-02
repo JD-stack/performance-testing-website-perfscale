@@ -19,37 +19,33 @@ export default function Blog() {
   return (
     <div className="min-h-screen bg-gray-50">
       
-      {/* Tabs Header */}
-      <div className="bg-white border-b">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex gap-4">
-          <Button
-            variant={activeTab === "manual" ? "default" : "outline"}
-            onClick={() => setActiveTab("manual")}
-          >
-            Manual Testers
-          </Button>
-          <Button
-            variant={activeTab === "automation" ? "default" : "outline"}
-            onClick={() => setActiveTab("automation")}
-          >
-            Automation Architects
-          </Button>
-        </div>
+      {/* Tabs */}
+      <div className="px-6 pt-6 flex gap-4">
+        <Button
+          variant={activeTab === "manual" ? "default" : "outline"}
+          onClick={() => setActiveTab("manual")}
+        >
+          Manual Testers
+        </Button>
+        <Button
+          variant={activeTab === "automation" ? "default" : "outline"}
+          onClick={() => setActiveTab("automation")}
+        >
+          Automation Architects
+        </Button>
       </div>
 
-      {/* Content Area */}
-      <div className="max-w-7xl mx-auto px-6 py-6">
+      {/* CONTENT AREA — FULL WIDTH */}
+      <div className="mt-6">
         {activeTab === "manual" && (
           <>
-            <div className="w-full">
-              <iframe
-                src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
-                title="HTML Reports in JMeter"
-                className="w-full min-h-[1400px] border rounded-lg bg-white"
-              />
-            </div>
+            <iframe
+              src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
+              title="HTML Reports in JMeter"
+              className="w-full h-[85vh] border-t"
+            />
 
-            <div className="mt-8">
+            <div className="px-6 py-6">
               <Button
                 className="px-8 py-5 text-lg"
                 onClick={() =>
@@ -64,15 +60,13 @@ export default function Blog() {
 
         {activeTab === "automation" && (
           <>
-            <div className="w-full">
-              <iframe
-                src="/docs/The 7 Most Useful JMeter Plugins.htm"
-                title="JMeter Plugins"
-                className="w-full min-h-[1400px] border rounded-lg bg-white"
-              />
-            </div>
+            <iframe
+              src="/docs/The 7 Most Useful JMeter Plugins.htm"
+              title="JMeter Plugins"
+              className="w-full h-[85vh] border-t"
+            />
 
-            <div className="mt-8">
+            <div className="px-6 py-6">
               <Button
                 className="px-8 py-5 text-lg"
                 onClick={() =>
@@ -88,7 +82,6 @@ export default function Blog() {
     </div>
   );
 }
-
 
 
 
