@@ -116,7 +116,7 @@ export function AdminDashboard() {
                   className="px-6 py-2 bg-[#1e3a8a] hover:bg-[#1e40af] text-white"
                   onClick={() => fileInputRef.current?.click()}
                 >
-                  Choose file from system
+                  Choose file from the system
                 </Button>
 
                 {pdf ? (
