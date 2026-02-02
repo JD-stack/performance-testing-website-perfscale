@@ -36,7 +36,7 @@ export default function Blog() {
         </Button>
       </div>
 
-      {/* CONTENT — PAGE SCROLLS, NOT IFRAME */}
+      {/* CONTENT */}
       <div className="px-6 pt-6 pb-10">
 
         {activeTab === "manual" && (
@@ -45,11 +45,7 @@ export default function Blog() {
               src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
               title="HTML Reports in JMeter"
               className="w-full border rounded-lg"
-              style={{
-                height: "140vh",        // ⬅️ intentionally LARGE
-                overflow: "hidden"
-              }}
-              scrolling="no"
+              style={{ height: "140vh" }}   // ⬅️ same large size
             />
 
             <div className="mt-8">
@@ -71,11 +67,7 @@ export default function Blog() {
               src="/docs/The 7 Most Useful JMeter Plugins.htm"
               title="JMeter Plugins"
               className="w-full border rounded-lg"
-              style={{
-                height: "140vh",
-                overflow: "hidden"
-              }}
-              scrolling="no"
+              style={{ height: "140vh" }}
             />
 
             <div className="mt-8">
@@ -94,6 +86,7 @@ export default function Blog() {
     </div>
   );
 }
+
 
 
 
