@@ -8,6 +8,8 @@ type BlogItem = {
   _id: string;
   title: string;
   pdfUrl: string;
+  downloadUrl: string;
+  originalName: string;
 };
 
 export default function Blog() {
@@ -22,11 +24,15 @@ export default function Blog() {
 
   const isLoggedIn = () => Boolean(localStorage.getItem("token"));
 
-  const handleDownload = (pdfUrl: string) => {
+  const handleDownload = (downloadUrl: string) => {
     if (!isLoggedIn()) {
       navigate("/login");
       return;
     }
+    window.open(downloadUrl, "_blank");
+  };
+
+  const handlePreview = (pdfUrl: string) => {
     window.open(pdfUrl, "_blank");
   };
 
@@ -43,7 +49,6 @@ export default function Blog() {
     }
   };
 
-  // Fetch blogs only when All Blogs tab is opened
   useEffect(() => {
     if (activeTab === "all") {
       fetchBlogs();
@@ -80,7 +85,7 @@ export default function Blog() {
       {/* CONTENT */}
       <div className="px-6 pt-6 pb-10">
 
-        {/* MANUAL TAB */}
+        {/* MANUAL */}
         {activeTab === "manual" && (
           <>
             <iframe
@@ -103,7 +108,7 @@ export default function Blog() {
           </>
         )}
 
-        {/* AUTOMATION TAB */}
+        {/* AUTOMATION */}
         {activeTab === "automation" && (
           <>
             <iframe
@@ -126,7 +131,7 @@ export default function Blog() {
           </>
         )}
 
-        {/* ALL BLOGS TAB */}
+        {/* ALL BLOGS */}
         {activeTab === "all" && (
           <>
             {loading && (
@@ -150,23 +155,32 @@ export default function Blog() {
                       {blog.title}
                     </h3>
 
-                    <Button
-                      onClick={() => handleDownload(blog.pdfUrl)}
-                    >
-                      Download PDF
-                    </Button>
+                    <div className="flex gap-3">
+                      <Button
+                        variant="outline"
+                        onClick={() => handlePreview(blog.pdfUrl)}
+                      >
+                        Preview
+                      </Button>
+
+                      <Button
+                        onClick={() =>
+                          handleDownload(blog.downloadUrl)
+                        }
+                      >
+                        Download
+                      </Button>
+                    </div>
                   </div>
                 ))}
               </div>
             )}
           </>
         )}
-
       </div>
     </div>
   );
 }
-
 
 
 
