@@ -1,34 +1,21 @@
 const express = require("express");
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
+const cloudinary = require("cloudinary").v2;
 const Blog = require("../models/Blog");
 const adminAuth = require("../middleware/adminAuth");
 
 const router = express.Router();
 
-/* ===================== ENSURE UPLOADS DIR EXISTS ===================== */
-const uploadDir = path.join(__dirname, "..", "uploads");
-
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-  console.log("📁 uploads directory created");
-}
-
-/* ===================== MULTER CONFIG ===================== */
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueName =
-      Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(null, uniqueName + path.extname(file.originalname));
-  },
+/* ===================== CLOUDINARY CONFIG ===================== */
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+/* ===================== MULTER (MEMORY) ===================== */
 const upload = multer({
-  storage,
+  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
   fileFilter: (req, file, cb) => {
     if (file.mimetype !== "application/pdf") {
       return cb(new Error("Only PDF files allowed"));
@@ -37,37 +24,52 @@ const upload = multer({
   },
 });
 
-/* ===================== ADMIN: UPLOAD BLOG PDF ===================== */
+/* ===================== ADMIN: UPLOAD BLOG ===================== */
 router.post(
   "/upload",
   adminAuth,
   upload.single("pdf"),
   async (req, res) => {
     try {
-      console.log("📄 FILE RECEIVED:", req.file);
-
       if (!req.file || !req.body.title) {
-        return res.status(400).json({
-          message: "Title and PDF are required",
-        });
+        return res.status(400).json({ message: "Title and PDF are required" });
       }
 
-      const blog = new Blog({
-        title: req.body.title,
-        pdfUrl: `/uploads/${req.file.filename}`,
-      });
+      const originalName = req.file.originalname;
 
-      await blog.save();
+      const uploadResult = await cloudinary.uploader.upload(
+        `data:application/pdf;base64,${req.file.buffer.toString("base64")}`,
+        {
+          resource_type: "raw",
+          folder: "perfscale_blogs",
+          public_id: originalName.replace(".pdf", ""), // keep name
+          use_filename: true,
+          unique_filename: false,
+        }
+      );
+
+      const previewUrl = uploadResult.secure_url;
+
+      // Force download with original filename
+      const downloadUrl = previewUrl.replace(
+        "/upload/",
+        "/upload/fl_attachment/"
+      );
+
+      const blog = await Blog.create({
+        title: req.body.title,
+        pdfUrl: previewUrl,
+        downloadUrl,
+        originalName,
+      });
 
       res.status(201).json({
         message: "Blog uploaded successfully",
         blog,
       });
     } catch (error) {
-      console.error("❌ Blog upload error:", error);
-      res.status(500).json({
-        message: "Failed to upload blog",
-      });
+      console.error("Cloudinary upload error:", error);
+      res.status(500).json({ message: "Upload failed" });
     }
   }
 );
@@ -77,13 +79,11 @@ router.get("/", async (req, res) => {
   try {
     const blogs = await Blog.find().sort({ createdAt: -1 });
     res.json(blogs);
-  } catch (error) {
-    console.error("❌ Fetch blogs error:", error);
-    res.status(500).json({
-      message: "Failed to fetch blogs",
-    });
+  } catch {
+    res.status(500).json({ message: "Failed to fetch blogs" });
   }
 });
 
 module.exports = router;
+
 
