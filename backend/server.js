@@ -10,9 +10,10 @@ const app = express();
 // Middleware
 app.use(cors());
 app.use(express.json());
+
+// Routes
 app.use("/api/blogs", require("./routes/blogs"));
-
-
+app.use("/api/auth", authRoutes);
 
 // Health check
 app.get("/", (req, res) => {
@@ -27,18 +28,14 @@ mongoose
   .then(() => {
     console.log("MongoDB Atlas connected");
 
-    // Register routes ONLY after DB is ready
-    app.use("/api/auth", authRoutes);
-
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
   })
   .catch((err) => {
     console.error("MongoDB connection failed:", err);
-    process.exit(1); // Crash instead of half-running
+    process.exit(1);
   });
-
 
 
 
