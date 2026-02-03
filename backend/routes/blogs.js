@@ -1,16 +1,24 @@
-
 const express = require("express");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 const Blog = require("../models/Blog");
 const adminAuth = require("../middleware/adminAuth");
 
 const router = express.Router();
 
+/* ===================== ENSURE UPLOADS DIR EXISTS ===================== */
+const uploadDir = path.join(__dirname, "..", "uploads");
+
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir);
+  console.log("📁 uploads directory created");
+}
+
 /* ===================== MULTER CONFIG ===================== */
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/");
+    cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
     const uniqueName =
@@ -36,6 +44,8 @@ router.post(
   upload.single("pdf"),
   async (req, res) => {
     try {
+      console.log("📄 FILE RECEIVED:", req.file);
+
       if (!req.file || !req.body.title) {
         return res.status(400).json({
           message: "Title and PDF are required",
@@ -53,9 +63,8 @@ router.post(
         message: "Blog uploaded successfully",
         blog,
       });
-
     } catch (error) {
-      console.error("Blog upload error:", error);
+      console.error("❌ Blog upload error:", error);
       res.status(500).json({
         message: "Failed to upload blog",
       });
@@ -69,7 +78,7 @@ router.get("/", async (req, res) => {
     const blogs = await Blog.find().sort({ createdAt: -1 });
     res.json(blogs);
   } catch (error) {
-    console.error("Fetch blogs error:", error);
+    console.error("❌ Fetch blogs error:", error);
     res.status(500).json({
       message: "Failed to fetch blogs",
     });
@@ -77,3 +86,4 @@ router.get("/", async (req, res) => {
 });
 
 module.exports = router;
+
