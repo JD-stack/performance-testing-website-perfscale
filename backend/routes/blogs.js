@@ -13,8 +13,9 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-/* ===================== MULTER (MEMORY) ===================== */
+/* ===================== MULTER (MEMORY STORAGE) ===================== */
 const upload = multer({
+  storage: multer.memoryStorage(), // ✅ REQUIRED
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
   fileFilter: (req, file, cb) => {
     if (file.mimetype !== "application/pdf") {
@@ -32,35 +33,37 @@ router.post(
   async (req, res) => {
     try {
       if (!req.file || !req.body.title) {
-        return res.status(400).json({ message: "Title and PDF are required" });
+        return res
+          .status(400)
+          .json({ message: "Title and PDF are required" });
       }
 
-      const originalName = req.file.originalname;
+      const originalName = req.file.originalname.replace(/\.pdf$/i, "");
+      const uniquePublicId = `${originalName}-${Date.now()}`;
 
+      // ✅ Upload PDF buffer to Cloudinary
       const uploadResult = await cloudinary.uploader.upload(
         `data:application/pdf;base64,${req.file.buffer.toString("base64")}`,
         {
           resource_type: "raw",
           folder: "perfscale_blogs",
-          public_id: originalName.replace(".pdf", ""), // keep name
-          use_filename: true,
-          unique_filename: false,
+          public_id: uniquePublicId,
         }
       );
 
       const previewUrl = uploadResult.secure_url;
 
-      // Force download with original filename
+      // ✅ Force download with original filename
       const downloadUrl = previewUrl.replace(
         "/upload/",
-        "/upload/fl_attachment/"
+        `/upload/fl_attachment:${originalName}.pdf/`
       );
 
       const blog = await Blog.create({
         title: req.body.title,
         pdfUrl: previewUrl,
         downloadUrl,
-        originalName,
+        originalName: `${originalName}.pdf`,
       });
 
       res.status(201).json({
@@ -79,7 +82,8 @@ router.get("/", async (req, res) => {
   try {
     const blogs = await Blog.find().sort({ createdAt: -1 });
     res.json(blogs);
-  } catch {
+  } catch (error) {
+    console.error("Fetch blogs error:", error);
     res.status(500).json({ message: "Failed to fetch blogs" });
   }
 });
