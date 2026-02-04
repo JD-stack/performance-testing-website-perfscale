@@ -6,17 +6,18 @@ const adminAuth = require("../middleware/adminAuth");
 
 const router = express.Router();
 
-/* ===================== CLOUDINARY CONFIG ===================== */
+// ================= CLOUDINARY CONFIG =================
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-/* ===================== MULTER (MEMORY STORAGE) ===================== */
+// ================= MULTER (MEMORY) =================
+const storage = multer.memoryStorage();
 const upload = multer({
-  storage: multer.memoryStorage(),
-  limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
+  storage,
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
   fileFilter: (req, file, cb) => {
     if (file.mimetype !== "application/pdf") {
       return cb(new Error("Only PDF files allowed"));
@@ -25,7 +26,7 @@ const upload = multer({
   },
 });
 
-/* ===================== ADMIN: UPLOAD BLOG ===================== */
+// ================= ADMIN: UPLOAD BLOG =================
 router.post(
   "/upload",
   adminAuth,
@@ -33,18 +34,16 @@ router.post(
   async (req, res) => {
     try {
       if (!req.file || !req.body.title) {
-        return res
-          .status(400)
-          .json({ message: "Title and PDF are required" });
+        return res.status(400).json({ message: "Title and PDF required" });
       }
 
-      const originalName = req.file.originalname; // KEEP FULL NAME
-      const publicId = `${originalName.replace(/\.pdf$/i, "")}-${Date.now()}`;
+      const originalName = req.file.originalname.replace(/\.pdf$/i, "");
+      const publicId = `${originalName}-${Date.now()}`;
 
       const uploadResult = await cloudinary.uploader.upload(
         `data:application/pdf;base64,${req.file.buffer.toString("base64")}`,
         {
-          resource_type: "auto",
+          resource_type: "raw",
           folder: "perfscale_blogs",
           public_id: publicId,
           use_filename: true,
@@ -52,16 +51,21 @@ router.post(
         }
       );
 
+      const previewUrl = uploadResult.secure_url;
+
+      const downloadUrl = previewUrl.replace(
+        "/upload/",
+        `/upload/fl_attachment:${encodeURIComponent(originalName)}.pdf/`
+      );
+
       const blog = await Blog.create({
         title: req.body.title,
-        pdfUrl: uploadResult.secure_url, // PREVIEW URL
-        originalName,                   // FOR DOWNLOAD NAME
+        pdfUrl: previewUrl,
+        downloadUrl,
+        originalName: `${originalName}.pdf`,
       });
 
-      res.status(201).json({
-        message: "Blog uploaded successfully",
-        blog,
-      });
+      res.status(201).json({ message: "Blog uploaded", blog });
     } catch (error) {
       console.error("Cloudinary upload error:", error);
       res.status(500).json({ message: "Upload failed" });
@@ -69,7 +73,7 @@ router.post(
   }
 );
 
-/* ===================== PUBLIC: GET BLOGS ===================== */
+// ================= PUBLIC: GET BLOGS =================
 router.get("/", async (req, res) => {
   try {
     const blogs = await Blog.find().sort({ createdAt: -1 });
