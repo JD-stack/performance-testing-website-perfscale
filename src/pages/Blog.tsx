@@ -26,25 +26,43 @@ export default function Blog() {
 
   /* ================= PREVIEW ================= */
   const handlePreview = (pdfUrl: string) => {
+  const googleViewer = `https://docs.google.com/gview?url=${encodeURIComponent(
+    pdfUrl
+  )}&embedded=true`;
+
+  window.open(googleViewer, "_blank");
+};
+
+/* ================= DOWNLOAD (AUTH-GUARDED) ================= */
+const handleDownload = (pdfUrl: string) => {
+  if (!isLoggedIn()) {
+    navigate("/login");
+    return;
+  }
+
+  // Browser handles filename + .pdf correctly
+  window.open(pdfUrl, "_blank");
+};
+  //const handlePreview = (pdfUrl: string) => {
     // ✅ Opens in browser / Google PDF viewer
-    window.open(pdfUrl, "_blank");
-  };
+    //window.open(pdfUrl, "_blank");
+  //};
 
   /* ================= DOWNLOAD (AUTH GUARDED) ================= */
-  const handleDownload = (pdfUrl: string, fileName: string) => {
-    if (!isLoggedIn()) {
-      navigate("/login");
-      return;
-    }
+  //const handleDownload = (pdfUrl: string, fileName: string) => {
+    //if (!isLoggedIn()) {
+     // navigate("/login");
+     // return;
+  //  }
 
     // ✅ Cloudinary-safe forced download with filename
-    const downloadUrl = pdfUrl.replace(
-      "/upload/",
-      `/upload/fl_attachment:${encodeURIComponent(fileName)}/`
-    );
+   // const downloadUrl = pdfUrl.replace(
+    //  "/upload/",
+     // `/upload/fl_attachment:${encodeURIComponent(fileName)}/`
+  //  );
 
-    window.open(downloadUrl, "_blank");
-  };
+  //  window.open(downloadUrl, "_blank");
+//  };
 
   /* ================= FETCH BLOGS ================= */
   const fetchBlogs = async () => {
