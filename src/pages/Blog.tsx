@@ -8,7 +8,7 @@ type BlogItem = {
   _id: string;
   title: string;
   pdfUrl: string;        // Cloudinary secure_url
-  originalName: string; // must include .pdf
+  originalName: string; // includes .pdf
   category: "manual" | "automation";
 };
 
@@ -21,48 +21,27 @@ export default function Blog() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-
   const isLoggedIn = () => Boolean(localStorage.getItem("token"));
 
-  /* ================= PREVIEW ================= */
+  /* ================= PREVIEW (GOOGLE DOCS VIEWER) ================= */
   const handlePreview = (pdfUrl: string) => {
-  const googleViewer = `https://docs.google.com/gview?url=${encodeURIComponent(
-    pdfUrl
-  )}&embedded=true`;
+    const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(
+      pdfUrl
+    )}&embedded=true`;
 
-  window.open(googleViewer, "_blank");
-};
+    window.open(viewerUrl, "_blank");
+  };
 
-/* ================= DOWNLOAD (AUTH-GUARDED) ================= */
-const handleDownload = (pdfUrl: string) => {
-  if (!isLoggedIn()) {
-    navigate("/login");
-    return;
-  }
+  /* ================= DOWNLOAD (AUTH-GUARDED) ================= */
+  const handleDownload = (pdfUrl: string) => {
+    if (!isLoggedIn()) {
+      navigate("/login");
+      return;
+    }
 
-  // Browser handles filename + .pdf correctly
-  window.open(pdfUrl, "_blank");
-};
-  //const handlePreview = (pdfUrl: string) => {
-    // ✅ Opens in browser / Google PDF viewer
-    //window.open(pdfUrl, "_blank");
-  //};
-
-  /* ================= DOWNLOAD (AUTH GUARDED) ================= */
-  //const handleDownload = (pdfUrl: string, fileName: string) => {
-    //if (!isLoggedIn()) {
-     // navigate("/login");
-     // return;
-  //  }
-
-    // ✅ Cloudinary-safe forced download with filename
-   // const downloadUrl = pdfUrl.replace(
-    //  "/upload/",
-     // `/upload/fl_attachment:${encodeURIComponent(fileName)}/`
-  //  );
-
-  //  window.open(downloadUrl, "_blank");
-//  };
+    // Cloudinary + browser will handle filename correctly
+    window.open(pdfUrl, "_blank");
+  };
 
   /* ================= FETCH BLOGS ================= */
   const fetchBlogs = async () => {
@@ -121,15 +100,11 @@ const handleDownload = (pdfUrl: string) => {
               style={{ height: "140vh" }}
             />
 
-            {/* Hard-coded PDF (unchanged) */}
             <div className="mt-8">
               <Button
                 className="px-8 py-5 text-lg"
                 onClick={() =>
-                  handleDownload(
-                    "/pdfs/Webtours_Test_Fragment_Manisha.pdf",
-                    "Webtours_Test_Fragment_Manisha.pdf"
-                  )
+                  handleDownload("/pdfs/Webtours_Test_Fragment_Manisha.pdf")
                 }
               >
                 Download PDF
@@ -147,15 +122,11 @@ const handleDownload = (pdfUrl: string) => {
               style={{ height: "140vh" }}
             />
 
-            {/* Hard-coded PDF (unchanged) */}
             <div className="mt-8">
               <Button
                 className="px-8 py-5 text-lg"
                 onClick={() =>
-                  handleDownload(
-                    "/pdfs/JMeter Perfmon Integration_Manisha.pdf",
-                    "JMeter_Perfmon_Integration_Manisha.pdf"
-                  )
+                  handleDownload("/pdfs/JMeter Perfmon Integration_Manisha.pdf")
                 }
               >
                 Download PDF
@@ -167,14 +138,10 @@ const handleDownload = (pdfUrl: string) => {
         {/* ================= ALL BLOGS ================= */}
         {activeTab === "all" && (
           <>
-            {loading && (
-              <p className="text-gray-500">Loading blogs…</p>
-            )}
+            {loading && <p className="text-gray-500">Loading blogs…</p>}
 
             {!loading && blogs.length === 0 && (
-              <p className="text-gray-500">
-                No blogs uploaded yet.
-              </p>
+              <p className="text-gray-500">No blogs uploaded yet.</p>
             )}
 
             {!loading && blogs.length > 0 && (
@@ -197,12 +164,7 @@ const handleDownload = (pdfUrl: string) => {
                       </Button>
 
                       <Button
-                        onClick={() =>
-                          handleDownload(
-                            blog.pdfUrl,
-                            blog.originalName
-                          )
-                        }
+                        onClick={() => handleDownload(blog.pdfUrl)}
                       >
                         Download
                       </Button>
