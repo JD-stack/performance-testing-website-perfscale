@@ -13,14 +13,12 @@ export function AdminDashboard() {
   const role = localStorage.getItem("role");
   const token = localStorage.getItem("token");
 
-  // 🔒 Protect route
   useEffect(() => {
-    if (role !== "admin" || !token) {
-      navigate("/login");
-    }
+    if (role !== "admin" || !token) navigate("/login");
   }, [role, token, navigate]);
 
   const [title, setTitle] = useState("");
+  const [category, setCategory] = useState<"manual" | "automation">("manual");
   const [pdf, setPdf] = useState<File | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -35,6 +33,7 @@ export function AdminDashboard() {
 
     const formData = new FormData();
     formData.append("title", title);
+    formData.append("category", category); // ✅ future-proof
     formData.append("pdf", pdf);
 
     try {
@@ -56,16 +55,15 @@ export function AdminDashboard() {
       toast.success("PDF uploaded successfully!");
       setTitle("");
       setPdf(null);
+      setCategory("manual");
       if (fileInputRef.current) fileInputRef.current.value = "";
-
     } catch {
       toast.error("Server error during upload");
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] flex items-center justify-center">
-      
+    <div className="min-h-screen bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] flex items-center justify-center px-4">
       <Card className="w-full max-w-md border-none shadow-2xl">
         <CardHeader>
           <CardTitle className="text-center text-2xl text-[#1e3a8a]">
@@ -78,23 +76,34 @@ export function AdminDashboard() {
 
             {/* Blog Title */}
             <div>
-              <Label className="text-sm font-medium">Blog Title</Label>
+              <Label>Blog Title</Label>
               <Input
                 placeholder="Enter blog title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="mt-1"
                 required
               />
             </div>
 
+            {/* Category */}
+            <div>
+              <Label>Category</Label>
+              <select
+                value={category}
+                onChange={(e) =>
+                  setCategory(e.target.value as "manual" | "automation")
+                }
+                className="w-full border rounded-md px-3 py-2"
+              >
+                <option value="manual">Manual Testers</option>
+                <option value="automation">Automation Architects</option>
+              </select>
+            </div>
+
             {/* PDF Upload */}
             <div>
-              <Label className="text-sm font-medium mb-2 block">
-                Upload PDF
-              </Label>
+              <Label className="block mb-2">Upload PDF</Label>
 
-              {/* Hidden native input */}
               <input
                 ref={fileInputRef}
                 type="file"
@@ -103,13 +112,13 @@ export function AdminDashboard() {
                 onChange={(e) => setPdf(e.target.files?.[0] || null)}
               />
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <Button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="bg-[#1e3a8a] hover:bg-[#1e40af] text-white px-6"
+                  className="bg-[#1e3a8a] hover:bg-[#1e40af]"
                 >
-                  Choose file from system
+                  Choose file
                 </Button>
 
                 <span className="text-sm text-gray-600 truncate max-w-[160px]">
@@ -118,19 +127,16 @@ export function AdminDashboard() {
               </div>
             </div>
 
-            {/* Submit */}
             <Button
               type="submit"
-              className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white py-6 text-lg"
+              className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white py-5 text-lg"
             >
               Upload PDF
             </Button>
-
           </form>
         </CardContent>
       </Card>
     </div>
   );
 }
-
 
