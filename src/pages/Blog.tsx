@@ -24,16 +24,22 @@ export default function Blog() {
 
   const isLoggedIn = () => Boolean(localStorage.getItem("token"));
 
-  const handleDownload = (downloadUrl: string) => {
+  const requireAuth = () => {
     if (!isLoggedIn()) {
       navigate("/login");
-      return;
+      return false;
     }
-    window.open(downloadUrl, "_blank");
+    return true;
   };
 
   const handlePreview = (pdfUrl: string) => {
+    if (!requireAuth()) return;
     window.open(pdfUrl, "_blank");
+  };
+
+  const handleDownload = (downloadUrl: string) => {
+    if (!requireAuth()) return;
+    window.open(downloadUrl, "_blank");
   };
 
   const fetchBlogs = async () => {
@@ -87,48 +93,22 @@ export default function Blog() {
 
         {/* MANUAL */}
         {activeTab === "manual" && (
-          <>
-            <iframe
-              src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
-              title="HTML Reports in JMeter"
-              className="w-full border rounded-lg"
-              style={{ height: "140vh" }}
-            />
-
-            <div className="mt-8">
-              <Button
-                className="px-8 py-5 text-lg"
-                onClick={() =>
-                  handleDownload("/pdfs/Webtours_Test_Fragment_Manisha.pdf")
-                }
-              >
-                Download PDF
-              </Button>
-            </div>
-          </>
+          <iframe
+            src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
+            title="HTML Reports in JMeter"
+            className="w-full border rounded-lg"
+            style={{ height: "140vh" }}
+          />
         )}
 
         {/* AUTOMATION */}
         {activeTab === "automation" && (
-          <>
-            <iframe
-              src="/docs/The 7 Most Useful JMeter Plugins.htm"
-              title="JMeter Plugins"
-              className="w-full border rounded-lg"
-              style={{ height: "140vh" }}
-            />
-
-            <div className="mt-8">
-              <Button
-                className="px-8 py-5 text-lg"
-                onClick={() =>
-                  handleDownload("/pdfs/JMeter Perfmon Integration_Manisha.pdf")
-                }
-              >
-                Download PDF
-              </Button>
-            </div>
-          </>
+          <iframe
+            src="/docs/The 7 Most Useful JMeter Plugins.htm"
+            title="JMeter Plugins"
+            className="w-full border rounded-lg"
+            style={{ height: "140vh" }}
+          />
         )}
 
         {/* ALL BLOGS */}
@@ -139,9 +119,7 @@ export default function Blog() {
             )}
 
             {!loading && blogs.length === 0 && (
-              <p className="text-gray-500">
-                No blogs uploaded yet.
-              </p>
+              <p className="text-gray-500">No blogs uploaded yet.</p>
             )}
 
             {!loading && blogs.length > 0 && (
@@ -164,9 +142,7 @@ export default function Blog() {
                       </Button>
 
                       <Button
-                        onClick={() =>
-                          handleDownload(blog.downloadUrl)
-                        }
+                        onClick={() => handleDownload(blog.downloadUrl)}
                       >
                         Download
                       </Button>
@@ -181,6 +157,7 @@ export default function Blog() {
     </div>
   );
 }
+
 
 
 
