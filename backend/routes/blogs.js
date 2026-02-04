@@ -15,7 +15,7 @@ cloudinary.config({
 
 /* ===================== MULTER (MEMORY STORAGE) ===================== */
 const upload = multer({
-  storage: multer.memoryStorage(), // ✅ REQUIRED
+  storage: multer.memoryStorage(),
   limits: { fileSize: 20 * 1024 * 1024 }, // 20MB
   fileFilter: (req, file, cb) => {
     if (file.mimetype !== "application/pdf") {
@@ -38,32 +38,24 @@ router.post(
           .json({ message: "Title and PDF are required" });
       }
 
-      const originalName = req.file.originalname.replace(/\.pdf$/i, "");
-      const uniquePublicId = `${originalName}-${Date.now()}`;
+      const originalName = req.file.originalname; // KEEP FULL NAME
+      const publicId = `${originalName.replace(/\.pdf$/i, "")}-${Date.now()}`;
 
-      // ✅ Upload PDF buffer to Cloudinary
       const uploadResult = await cloudinary.uploader.upload(
         `data:application/pdf;base64,${req.file.buffer.toString("base64")}`,
         {
-          resource_type: "raw",
+          resource_type: "auto",
           folder: "perfscale_blogs",
-          public_id: uniquePublicId,
+          public_id: publicId,
+          use_filename: true,
+          unique_filename: false,
         }
-      );
-
-      const previewUrl = uploadResult.secure_url;
-
-      // ✅ Force download with original filename
-      const downloadUrl = previewUrl.replace(
-        "/upload/",
-        `/upload/fl_attachment:${originalName}.pdf/`
       );
 
       const blog = await Blog.create({
         title: req.body.title,
-        pdfUrl: previewUrl,
-        downloadUrl,
-        originalName: `${originalName}.pdf`,
+        pdfUrl: uploadResult.secure_url, // PREVIEW URL
+        originalName,                   // FOR DOWNLOAD NAME
       });
 
       res.status(201).json({
@@ -89,5 +81,4 @@ router.get("/", async (req, res) => {
 });
 
 module.exports = router;
-
 
