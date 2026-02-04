@@ -22,24 +22,28 @@ export default function Blog() {
   const navigate = useNavigate();
   const isLoggedIn = () => Boolean(localStorage.getItem("token"));
 
-  const handlePreview = (pdfUrl: string) => {
-    window.open(`${pdfUrl}?inline=true`, "_blank");
-  };
-
-  const handleDownload = (pdfUrl: string) => {
+  /* ===================== AUTH-GUARDED DOWNLOAD ===================== */
+  const handleDownload = (url: string) => {
     if (!isLoggedIn()) {
       navigate("/login");
       return;
     }
-    window.open(`${pdfUrl}?download=true`, "_blank");
+    window.open(`${url}?dl=1`, "_blank"); // ✅ Cloudinary-safe download
   };
 
+  const handlePreview = (url: string) => {
+    window.open(url, "_blank"); // ✅ Preview in browser
+  };
+
+  /* ===================== FETCH BLOGS ===================== */
   const fetchBlogs = async () => {
     try {
       setLoading(true);
       const res = await fetch(`${API_URL}/api/blogs`);
       const data = await res.json();
       setBlogs(data || []);
+    } catch {
+      setBlogs([]);
     } finally {
       setLoading(false);
     }
@@ -52,7 +56,7 @@ export default function Blog() {
   return (
     <div className="bg-gray-50 min-h-screen">
 
-      {/* Tabs */}
+      {/* TABS */}
       <div className="px-6 pt-6 flex gap-4">
         <Button
           variant={activeTab === "manual" ? "default" : "outline"}
@@ -79,7 +83,7 @@ export default function Blog() {
       {/* CONTENT */}
       <div className="px-6 pt-6 pb-10">
 
-        {/* KEEP HARDCODED PDFs */}
+        {/* ================= MANUAL ================= */}
         {activeTab === "manual" && (
           <>
             <iframe
@@ -87,9 +91,22 @@ export default function Blog() {
               className="w-full border rounded-lg"
               style={{ height: "140vh" }}
             />
+
+            {/* 🔽 RESTORED HARD-CODED PDF */}
+            <div className="mt-8">
+              <Button
+                className="px-8 py-5 text-lg"
+                onClick={() =>
+                  handleDownload("/pdfs/Webtours_Test_Fragment_Manisha.pdf")
+                }
+              >
+                Download PDF
+              </Button>
+            </div>
           </>
         )}
 
+        {/* ================= AUTOMATION ================= */}
         {activeTab === "automation" && (
           <>
             <iframe
@@ -97,10 +114,22 @@ export default function Blog() {
               className="w-full border rounded-lg"
               style={{ height: "140vh" }}
             />
+
+            {/* 🔽 RESTORED HARD-CODED PDF */}
+            <div className="mt-8">
+              <Button
+                className="px-8 py-5 text-lg"
+                onClick={() =>
+                  handleDownload("/pdfs/JMeter Perfmon Integration_Manisha.pdf")
+                }
+              >
+                Download PDF
+              </Button>
+            </div>
           </>
         )}
 
-        {/* ALL BLOGS */}
+        {/* ================= ALL BLOGS ================= */}
         {activeTab === "all" && (
           <>
             {loading && <p className="text-gray-500">Loading blogs…</p>}
@@ -114,9 +143,9 @@ export default function Blog() {
                 {blogs.map((blog) => (
                   <div
                     key={blog._id}
-                    className="bg-white border rounded-xl shadow-sm p-6"
+                    className="bg-white border rounded-xl shadow-sm p-6 flex flex-col justify-between"
                   >
-                    <h3 className="text-lg font-semibold mb-4">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
                       {blog.title}
                     </h3>
 
