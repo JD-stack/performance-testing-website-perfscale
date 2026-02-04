@@ -7,7 +7,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 type BlogItem = {
   _id: string;
   title: string;
-  pdfUrl: string;
+  pdfUrl: string;       // Cloudinary preview URL
+  downloadUrl?: string; // optional (if backend sends it)
   originalName: string;
 };
 
@@ -23,16 +24,25 @@ export default function Blog() {
   const isLoggedIn = () => Boolean(localStorage.getItem("token"));
 
   /* ===================== AUTH-GUARDED DOWNLOAD ===================== */
-  const handleDownload = (url: string) => {
+  const handleDownload = (pdfUrl: string, fileName: string) => {
     if (!isLoggedIn()) {
       navigate("/login");
       return;
     }
-    window.open(`${url}?dl=1`, "_blank"); // ✅ Cloudinary-safe download
+
+    // ✅ Force download WITH filename + .pdf
+    const downloadUrl = pdfUrl.replace(
+      "/upload/",
+      `/upload/fl_attachment:${encodeURIComponent(fileName)}/`
+    );
+
+    window.open(downloadUrl, "_blank");
   };
 
-  const handlePreview = (url: string) => {
-    window.open(url, "_blank"); // ✅ Preview in browser
+  /* ===================== PREVIEW ===================== */
+  const handlePreview = (pdfUrl: string) => {
+    // ✅ Pure preview (NO fl_attachment, NO ?dl=1)
+    window.open(pdfUrl, "_blank");
   };
 
   /* ===================== FETCH BLOGS ===================== */
@@ -92,12 +102,15 @@ export default function Blog() {
               style={{ height: "140vh" }}
             />
 
-            {/* 🔽 RESTORED HARD-CODED PDF */}
+            {/* HARD-CODED PDF (unchanged) */}
             <div className="mt-8">
               <Button
                 className="px-8 py-5 text-lg"
                 onClick={() =>
-                  handleDownload("/pdfs/Webtours_Test_Fragment_Manisha.pdf")
+                  handleDownload(
+                    "/pdfs/Webtours_Test_Fragment_Manisha.pdf",
+                    "Webtours_Test_Fragment_Manisha.pdf"
+                  )
                 }
               >
                 Download PDF
@@ -115,12 +128,15 @@ export default function Blog() {
               style={{ height: "140vh" }}
             />
 
-            {/* 🔽 RESTORED HARD-CODED PDF */}
+            {/* HARD-CODED PDF (unchanged) */}
             <div className="mt-8">
               <Button
                 className="px-8 py-5 text-lg"
                 onClick={() =>
-                  handleDownload("/pdfs/JMeter Perfmon Integration_Manisha.pdf")
+                  handleDownload(
+                    "/pdfs/JMeter Perfmon Integration_Manisha.pdf",
+                    "JMeter_Perfmon_Integration_Manisha.pdf"
+                  )
                 }
               >
                 Download PDF
@@ -132,7 +148,9 @@ export default function Blog() {
         {/* ================= ALL BLOGS ================= */}
         {activeTab === "all" && (
           <>
-            {loading && <p className="text-gray-500">Loading blogs…</p>}
+            {loading && (
+              <p className="text-gray-500">Loading blogs…</p>
+            )}
 
             {!loading && blogs.length === 0 && (
               <p className="text-gray-500">No blogs uploaded yet.</p>
@@ -158,7 +176,12 @@ export default function Blog() {
                       </Button>
 
                       <Button
-                        onClick={() => handleDownload(blog.pdfUrl)}
+                        onClick={() =>
+                          handleDownload(
+                            blog.pdfUrl,
+                            blog.originalName || "blog.pdf"
+                          )
+                        }
                       >
                         Download
                       </Button>
