@@ -8,7 +8,6 @@ type BlogItem = {
   _id: string;
   title: string;
   pdfUrl: string;
-  downloadUrl: string;
   originalName: string;
 };
 
@@ -21,25 +20,18 @@ export default function Blog() {
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-
   const isLoggedIn = () => Boolean(localStorage.getItem("token"));
 
-  const requireAuth = () => {
+  const handlePreview = (pdfUrl: string) => {
+    window.open(`${pdfUrl}?inline=true`, "_blank");
+  };
+
+  const handleDownload = (pdfUrl: string) => {
     if (!isLoggedIn()) {
       navigate("/login");
-      return false;
+      return;
     }
-    return true;
-  };
-
-  const handlePreview = (pdfUrl: string) => {
-    if (!requireAuth()) return;
-    window.open(pdfUrl, "_blank");
-  };
-
-  const handleDownload = (downloadUrl: string) => {
-    if (!requireAuth()) return;
-    window.open(downloadUrl, "_blank");
+    window.open(`${pdfUrl}?download=true`, "_blank");
   };
 
   const fetchBlogs = async () => {
@@ -48,17 +40,13 @@ export default function Blog() {
       const res = await fetch(`${API_URL}/api/blogs`);
       const data = await res.json();
       setBlogs(data || []);
-    } catch {
-      setBlogs([]);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (activeTab === "all") {
-      fetchBlogs();
-    }
+    if (activeTab === "all") fetchBlogs();
   }, [activeTab]);
 
   return (
@@ -91,32 +79,31 @@ export default function Blog() {
       {/* CONTENT */}
       <div className="px-6 pt-6 pb-10">
 
-        {/* MANUAL */}
+        {/* KEEP HARDCODED PDFs */}
         {activeTab === "manual" && (
-          <iframe
-            src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
-            title="HTML Reports in JMeter"
-            className="w-full border rounded-lg"
-            style={{ height: "140vh" }}
-          />
+          <>
+            <iframe
+              src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
+              className="w-full border rounded-lg"
+              style={{ height: "140vh" }}
+            />
+          </>
         )}
 
-        {/* AUTOMATION */}
         {activeTab === "automation" && (
-          <iframe
-            src="/docs/The 7 Most Useful JMeter Plugins.htm"
-            title="JMeter Plugins"
-            className="w-full border rounded-lg"
-            style={{ height: "140vh" }}
-          />
+          <>
+            <iframe
+              src="/docs/The 7 Most Useful JMeter Plugins.htm"
+              className="w-full border rounded-lg"
+              style={{ height: "140vh" }}
+            />
+          </>
         )}
 
         {/* ALL BLOGS */}
         {activeTab === "all" && (
           <>
-            {loading && (
-              <p className="text-gray-500">Loading blogs…</p>
-            )}
+            {loading && <p className="text-gray-500">Loading blogs…</p>}
 
             {!loading && blogs.length === 0 && (
               <p className="text-gray-500">No blogs uploaded yet.</p>
@@ -127,9 +114,9 @@ export default function Blog() {
                 {blogs.map((blog) => (
                   <div
                     key={blog._id}
-                    className="bg-white border rounded-xl shadow-sm p-6 flex flex-col justify-between"
+                    className="bg-white border rounded-xl shadow-sm p-6"
                   >
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
+                    <h3 className="text-lg font-semibold mb-4">
                       {blog.title}
                     </h3>
 
@@ -142,7 +129,7 @@ export default function Blog() {
                       </Button>
 
                       <Button
-                        onClick={() => handleDownload(blog.downloadUrl)}
+                        onClick={() => handleDownload(blog.pdfUrl)}
                       >
                         Download
                       </Button>
@@ -157,7 +144,4 @@ export default function Blog() {
     </div>
   );
 }
-
-
-
 
