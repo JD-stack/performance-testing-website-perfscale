@@ -4,7 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 
 const authRoutes = require("./routes/auth");
-
+const contactRoutes = require("./routes/contact"); 
 const app = express();
 
 // Middleware
@@ -36,6 +36,7 @@ mongoose
     console.error("MongoDB connection failed:", err);
     process.exit(1);
   });
+
 
 
 
