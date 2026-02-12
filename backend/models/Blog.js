@@ -9,7 +9,7 @@ const blogSchema = new mongoose.Schema(
     },
 
     // Cloudinary secure_url (used for preview)
-    pdfUrl: {
+    fileUrl: {
       type: String,
       required: true,
     },
