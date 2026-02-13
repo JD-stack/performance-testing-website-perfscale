@@ -18,9 +18,7 @@ export function AdminDashboard() {
   }, [role, token, navigate]);
 
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState<"fundamentals" | "advanced">(
-    "fundamentals"
-  );
+  const [category, setCategory] = useState<"fundamentals" | "advanced">("fundamentals");
   const [pdf, setPdf] = useState<File | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -35,7 +33,7 @@ export function AdminDashboard() {
 
     const formData = new FormData();
     formData.append("title", title);
-    formData.append("category", category);
+    formData.append("category", category); // ✅ future-proof
     formData.append("pdf", pdf);
 
     try {
@@ -54,7 +52,7 @@ export function AdminDashboard() {
         return;
       }
 
-      toast.success("Resource uploaded successfully!");
+      toast.success("PDF uploaded successfully!");
       setTitle("");
       setPdf(null);
       setCategory("fundamentals");
@@ -65,58 +63,46 @@ export function AdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-indigo-900 to-blue-600 flex items-center justify-center px-6">
-
-      <Card className="w-full max-w-lg rounded-2xl shadow-2xl border border-slate-200 bg-white">
+    <div className="min-h-screen bg-gradient-to-br from-[#1e3a8a] via-[#1e40af] to-[#3b82f6] flex items-center justify-center px-4">
+      <Card className="w-full max-w-md border-none shadow-2xl">
         <CardHeader>
-          <CardTitle className="text-2xl font-semibold text-slate-800 text-center">
-            Admin Resource Upload
+          <CardTitle className="text-center text-2xl text-[#1e3a8a]">
+            Admin Dashboard
           </CardTitle>
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={handleUpload} className="space-y-8">
+          <form onSubmit={handleUpload} className="space-y-6">
 
-            {/* Title */}
-            <div className="space-y-2">
-              <Label className="text-slate-700 font-medium">
-                Resource Title
-              </Label>
+            {/* Blog Title */}
+            <div>
+              <Label>Blog Title</Label>
               <Input
                 placeholder="Enter resource title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="rounded-xl"
                 required
               />
             </div>
 
             {/* Category */}
-            <div className="space-y-2">
-              <Label className="text-slate-700 font-medium">
-                Category
-              </Label>
+            <div>
+              <Label>Category</Label>
               <select
                 value={category}
                 onChange={(e) =>
                   setCategory(e.target.value as "fundamentals" | "advanced")
                 }
-                className="w-full border border-slate-300 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                className="w-full border rounded-md px-3 py-2"
               >
-                <option value="fundamentals">
-                  Performance Testing Fundamentals
-                </option>
-                <option value="advanced">
-                  Advanced JMeter Engineering
-                </option>
+                <option value="fundamentals">Performance Testing Fundamentals</option>
+                <option value="advanced">Advanced JMeter Engineering</option>
               </select>
             </div>
 
-            {/* File Upload */}
-            <div className="space-y-3">
-              <Label className="text-slate-700 font-medium">
-                Upload PDF
-              </Label>
+            {/* PDF Upload */}
+            <div>
+              <Label className="block mb-2">Upload PDF</Label>
 
               <input
                 ref={fileInputRef}
@@ -126,27 +112,26 @@ export function AdminDashboard() {
                 onChange={(e) => setPdf(e.target.files?.[0] || null)}
               />
 
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-3">
                 <Button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
-                  className="rounded-xl px-6 py-5"
+                  className="bg-[#1e3a8a] hover:bg-[#1e40af]"
                 >
-                  Choose File
+                  Choose file
                 </Button>
 
-                <span className="text-sm text-gray-600 truncate max-w-[180px]">
+                <span className="text-sm text-gray-600 truncate max-w-[160px]">
                   {pdf ? pdf.name : "No file selected"}
                 </span>
               </div>
             </div>
 
-            {/* Submit */}
             <Button
               type="submit"
-              className="w-full rounded-xl py-6 text-lg"
+              className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white py-5 text-lg"
             >
-              Upload Resource
+              Upload PDF
             </Button>
           </form>
         </CardContent>
