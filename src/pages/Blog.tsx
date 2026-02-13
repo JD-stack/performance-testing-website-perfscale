@@ -33,38 +33,30 @@ export default function Blog() {
   };
 
   /* ================= DOWNLOAD (AUTH-GUARDED) ================= */
- const handleDownload = async (pdfUrl: string, fileName: string) => {
+const handleDownload = async (id: string) => {
   if (!isLoggedIn()) {
     navigate("/login");
     return;
   }
 
   try {
-    // Force Cloudinary to send file as downloadable attachment
-    const downloadUrl = pdfUrl.replace(
-      "/upload/",
-      `/upload/fl_attachment:${fileName}/`
-    );
+    const res = await fetch(`${API_URL}/api/blogs/download/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
 
-    const response = await fetch(downloadUrl);
-    const blob = await response.blob();
+    if (!res.ok) {
+      throw new Error("Download failed");
+    }
 
-    const link = document.createElement("a");
-    link.href = window.URL.createObjectURL(blob);
+    const data = await res.json();
 
-    // Ensure filename has .pdf
-    link.download = fileName.endsWith(".pdf")
-      ? fileName
-      : `${fileName}.pdf`;
-
-    document.body.appendChild(link);
-    link.click();
-
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(link.href);
+    // This URL already forces attachment
+    window.location.href = data.downloadUrl;
 
   } catch (error) {
-    console.error("Download failed:", error);
+    console.error("Download error:", error);
   }
 };
 
@@ -190,7 +182,7 @@ export default function Blog() {
                       </Button>
 
                       <Button
-                        onClick={() => handleDownload(blog.pdfUrl,blog.originalName)}
+                        onClick={() => handleDownload(blog._id)}
                       >
                         Download
                       </Button>
