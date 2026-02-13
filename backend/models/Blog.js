@@ -19,6 +19,10 @@ const blogSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    publicId: {
+  type: String,
+  required: true,
+},
 
     // Optional but VERY useful later
     category: {
