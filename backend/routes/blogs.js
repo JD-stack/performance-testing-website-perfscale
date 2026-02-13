@@ -28,7 +28,6 @@ const upload = multer({
 /* ================= ADMIN: UPLOAD BLOG ================= */
 router.post(
   "/upload",
-  adminAuth,
   upload.single("pdf"),
   async (req, res) => {
     try {
