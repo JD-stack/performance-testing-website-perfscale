@@ -7,8 +7,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 type BlogItem = {
   _id: string;
   title: string;
-  pdfUrl: string;        // Cloudinary secure_url
-  originalName: string; // includes .pdf
+  pdfUrl: string;
+  originalName: string;
   category: "fundamentals" | "advanced";
 };
 
@@ -23,7 +23,7 @@ export default function Blog() {
   const navigate = useNavigate();
   const isLoggedIn = () => Boolean(localStorage.getItem("token"));
 
-  /* ================= PREVIEW (GOOGLE DOCS VIEWER) ================= */
+  /* ================= PREVIEW ================= */
   const handlePreview = (pdfUrl: string) => {
     const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(
       pdfUrl
@@ -32,40 +32,37 @@ export default function Blog() {
     window.open(viewerUrl, "_blank");
   };
 
-  /* ================= DOWNLOAD (AUTH-GUARDED) ================= */
-const handleDownload = async (id: string) => {
-  if (!isLoggedIn()) {
-    navigate("/login");
-    return;
-  }
-
-  try {
-    const res = await fetch(`${API_URL}/api/blogs/download/${id}`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-
-    if (!res.ok) {
-      throw new Error("Download failed");
+  /* ================= DOWNLOAD ================= */
+  const handleDownload = async (id: string) => {
+    if (!isLoggedIn()) {
+      navigate("/login");
+      return;
     }
 
-    const { downloadUrl } = await res.json();
+    try {
+      const res = await fetch(`${API_URL}/api/blogs/download/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
 
-    // ✅ THIS IS THE IMPORTANT PART
-    const link = document.createElement("a");
-    link.href = downloadUrl;
-    link.rel = "noopener";
-    link.target = "_self";   // IMPORTANT (not _blank)
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+      if (!res.ok) {
+        throw new Error("Download failed");
+      }
 
-  } catch (error) {
-    console.error("Download error:", error);
-  }
-};
+      const { downloadUrl } = await res.json();
 
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.rel = "noopener";
+      link.target = "_self";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Download error:", error);
+    }
+  };
 
   /* ================= FETCH BLOGS ================= */
   const fetchBlogs = async () => {
@@ -87,7 +84,6 @@ const handleDownload = async (id: string) => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-
       {/* ================= TABS ================= */}
       <div className="px-6 pt-6 flex gap-4">
         <Button
@@ -114,8 +110,7 @@ const handleDownload = async (id: string) => {
 
       {/* ================= CONTENT ================= */}
       <div className="px-6 pt-6 pb-10">
-
-        {/* ================= MANUAL ================= */}
+        {/* ================= FUNDAMENTALS ================= */}
         {activeTab === "fundamentals" && (
           <>
             <iframe
@@ -123,21 +118,10 @@ const handleDownload = async (id: string) => {
               className="w-full border rounded-lg"
               style={{ height: "140vh" }}
             />
-
-            <div className="mt-8">
-              <Button
-                className="px-8 py-5 text-lg"
-                onClick={() =>
-                  handleDownload("/pdfs/Webtours_Test_Fragment_Manisha.pdf")
-                }
-              >
-                Download PDF
-              </Button>
-            </div>
           </>
         )}
 
-        {/* ================= AUTOMATION ================= */}
+        {/* ================= ADVANCED ================= */}
         {activeTab === "advanced" && (
           <>
             <iframe
@@ -145,17 +129,6 @@ const handleDownload = async (id: string) => {
               className="w-full border rounded-lg"
               style={{ height: "140vh" }}
             />
-
-            <div className="mt-8">
-              <Button
-                className="px-8 py-5 text-lg"
-                onClick={() =>
-                  handleDownload("/pdfs/JMeter Perfmon Integration_Manisha.pdf")
-                }
-              >
-                Download PDF
-              </Button>
-            </div>
           </>
         )}
 
@@ -175,9 +148,25 @@ const handleDownload = async (id: string) => {
                     key={blog._id}
                     className="bg-white border rounded-xl shadow-sm p-6 flex flex-col justify-between"
                   >
-                    <h3 className="text-lg font-semibold text-gray-800 mb-4">
-                      {blog.title}
-                    </h3>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                        {blog.title}
+                      </h3>
+
+                      {/* CATEGORY BADGE */}
+                      <span
+                        className={`inline-block px-3 py-1 text-xs font-medium rounded-full mb-4
+                          ${
+                            blog.category === "fundamentals"
+                              ? "bg-blue-100 text-blue-700"
+                              : "bg-purple-100 text-purple-700"
+                          }`}
+                      >
+                        {blog.category === "fundamentals"
+                          ? "Performance Testing Fundamentals"
+                          : "Advanced JMeter Engineering"}
+                      </span>
+                    </div>
 
                     <div className="flex gap-3">
                       <Button
@@ -185,16 +174,13 @@ const handleDownload = async (id: string) => {
                         onClick={() => handlePreview(blog.pdfUrl)}
                       >
                         Preview
-                  <Button
-  onClick={() => {
-    console.log("BLOG OBJECT:", blog);
-    console.log("BLOG ID:", blog._id);
-    handleDownload(blog._id);
-  }}
->
-  Download
-</Button>
+                      </Button>
 
+                      <Button
+                        onClick={() => handleDownload(blog._id)}
+                      >
+                        Download
+                      </Button>
                     </div>
                   </div>
                 ))}
