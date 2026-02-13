@@ -9,13 +9,13 @@ type BlogItem = {
   title: string;
   pdfUrl: string;        // Cloudinary secure_url
   originalName: string; // includes .pdf
-  category: "manual" | "automation";
+  category: "fundamentals" | "advanced";
 };
 
 export default function Blog() {
   const [activeTab, setActiveTab] = useState<
-    "manual" | "automation" | "all"
-  >("manual");
+    "fundamentals" | "advanced" | "all"
+  >("fundamentals");
 
   const [blogs, setBlogs] = useState<BlogItem[]>([]);
   const [loading, setLoading] = useState(false);
@@ -67,17 +67,17 @@ export default function Blog() {
       {/* ================= TABS ================= */}
       <div className="px-6 pt-6 flex gap-4">
         <Button
-          variant={activeTab === "manual" ? "default" : "outline"}
+          variant={activeTab === "fundamentals" ? "default" : "outline"}
           onClick={() => setActiveTab("manual")}
         >
-          Manual Testers
+          Performance Testing Fundamentals
         </Button>
 
         <Button
-          variant={activeTab === "automation" ? "default" : "outline"}
-          onClick={() => setActiveTab("automation")}
+          variant={activeTab === "advanced" ? "default" : "outline"}
+          onClick={() => setActiveTab("advanced")}
         >
-          Automation Architects
+          Advanced JMeter Engineering
         </Button>
 
         <Button
@@ -114,7 +114,7 @@ export default function Blog() {
         )}
 
         {/* ================= AUTOMATION ================= */}
-        {activeTab === "automation" && (
+        {activeTab === "advanced" && (
           <>
             <iframe
               src="/docs/The 7 Most Useful JMeter Plugins.htm"
