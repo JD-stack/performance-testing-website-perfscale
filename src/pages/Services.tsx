@@ -107,16 +107,16 @@ export function Services() {
     <div className="min-h-screen">
 
       {/* Header */}
-      <section className="bg-[#0f2f7a] text-white py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4 text-white">
-            Our Capabilities
-          </h1>
-          <p className="text-xl text-blue-100 max-w-3xl">
-            Comprehensive performance engineering capabilities tailored to your application, scale, and business objectives.
-          </p>
-        </div>
-      </section>
+      <section className="py-16" style={{ backgroundColor: "#0b1f5e" }}>
+  <div className="max-w-7xl mx-auto px-4">
+    <h1 className="text-4xl font-bold mb-4 text-white">
+      Our Capabilities
+    </h1>
+    <p className="text-xl text-white/90 max-w-3xl">
+      Comprehensive performance engineering capabilities tailored to your application, scale, and business objectives.
+    </p>
+  </div>
+</section>
 
       {/* Overview */}
       <section className="py-20 bg-white">
