@@ -50,12 +50,13 @@ const handleDownload = async (id: string) => {
       throw new Error("Download failed");
     }
 
-    const data = await res.json();
+    const { downloadUrl } = await res.json();
 
-    // Create temporary anchor for download
+    // ✅ THIS IS THE IMPORTANT PART
     const link = document.createElement("a");
-    link.href = data.downloadUrl;
-    link.target = "_blank";
+    link.href = downloadUrl;
+    link.rel = "noopener";
+    link.target = "_self";   // IMPORTANT (not _blank)
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
