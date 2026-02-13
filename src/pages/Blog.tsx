@@ -68,7 +68,7 @@ export default function Blog() {
       <div className="px-6 pt-6 flex gap-4">
         <Button
           variant={activeTab === "fundamentals" ? "default" : "outline"}
-          onClick={() => setActiveTab("manual")}
+          onClick={() => setActiveTab("fundamentals")}
         >
           Performance Testing Fundamentals
         </Button>
@@ -84,7 +84,7 @@ export default function Blog() {
           variant={activeTab === "all" ? "default" : "outline"}
           onClick={() => setActiveTab("all")}
         >
-          All Blogs
+          All Resources
         </Button>
       </div>
 
@@ -92,7 +92,7 @@ export default function Blog() {
       <div className="px-6 pt-6 pb-10">
 
         {/* ================= MANUAL ================= */}
-        {activeTab === "manual" && (
+        {activeTab === "fundamentals" && (
           <>
             <iframe
               src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
