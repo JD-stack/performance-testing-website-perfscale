@@ -54,6 +54,7 @@ router.post(
         title,
         category, // manual | automation
         pdfUrl: uploadResult.secure_url,
+        publicId: uploadResult.public_id,
         originalName: req.file.originalname, // keeps .pdf
       });
 
