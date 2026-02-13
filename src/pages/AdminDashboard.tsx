@@ -18,7 +18,7 @@ export function AdminDashboard() {
   }, [role, token, navigate]);
 
   const [title, setTitle] = useState("");
-  const [category, setCategory] = useState<"manual" | "automation">("manual");
+  const [category, setCategory] = useState<"fundamentals" | "advanced">("fundamentals");
   const [pdf, setPdf] = useState<File | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
