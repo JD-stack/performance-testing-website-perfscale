@@ -80,7 +80,8 @@ router.get("/", async (req, res) => {
   }
 });
 /* ================= SECURE DOWNLOAD ================= */
-router.get("/download/:id", async (req, res) => {
+const userAuth = require("../middleware/userAuth");
+router.get("/download/:id",userAuth, async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id);
 
