@@ -107,7 +107,7 @@ export function Services() {
     <div className="min-h-screen">
 
       {/* Header */}
-      <section className="bg-gradient-to-br from-[#0f172a] via-[#1e3a8a] to-[#1e40af] text-white py-16">
+      <section className="bg-[#0f2f7a] text-white py-16">
         <div className="max-w-7xl mx-auto px-4">
           <h1 className="text-4xl font-bold mb-4 text-white">
             Our Capabilities
