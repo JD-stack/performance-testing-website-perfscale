@@ -23,7 +23,7 @@ const blogSchema = new mongoose.Schema(
     // Optional but VERY useful later
     category: {
       type: String,
-      enum: ["manual", "automation"],
+      enum: ["fundamentals", "advanced"],
       required: true,
     },
 
