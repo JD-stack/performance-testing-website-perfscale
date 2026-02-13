@@ -76,7 +76,7 @@ export function AdminDashboard() {
 
             {/* Blog Title */}
             <div>
-              <Label>Blog Title</Label>
+              <Label>Resource Title</Label>
               <Input
                 placeholder="Enter resource title"
                 value={title}
