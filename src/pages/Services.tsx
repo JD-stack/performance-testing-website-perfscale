@@ -112,7 +112,7 @@ export function Services() {
     <h1 className="text-4xl font-bold mb-4 text-white">
       Our Capabilities
     </h1>
-    <p className="text-xl text-white/90 max-w-3xl">
+    <p className="text-xl text-blue-100 max-w-3xl">
       Comprehensive performance engineering capabilities tailored to your application, scale, and business objectives.
     </p>
   </div>
