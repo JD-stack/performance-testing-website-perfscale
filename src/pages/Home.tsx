@@ -225,4 +225,34 @@ export function Home() {
           <Card className="bg-slate-800 border border-blue-500 shadow-lg">
             <CardHeader>
               <CardTitle className="text-2xl text-blue-400">
+                Ready to Get Started?
+              </CardTitle>
+              <CardDescription className="text-gray-400">
+                Let's discuss how we can help optimize your application's performance.
+              </CardDescription>
+            </CardHeader>
 
+            <CardContent className="space-y-4">
+              <Link to="/about#contact">
+                <Button className="w-full bg-blue-600 hover:bg-blue-500 text-white">
+                  Contact Us
+                </Button>
+              </Link>
+
+              <Link to="/services">
+                <Button
+                  variant="outline"
+                  className="w-full border-blue-400 text-blue-400 hover:bg-blue-900/40"
+                >
+                  View Services
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+
+        </div>
+      </section>
+
+    </div>
+  );
+}
