@@ -17,6 +17,7 @@ module.exports = (req, res, next) => {
 
     // 3️⃣ Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("Decoded JWT:", decoded);
 
     // 4️⃣ Check admin role
     if (decoded.role !== "admin") {
@@ -41,3 +42,4 @@ module.exports = (req, res, next) => {
     });
   }
 };
+
