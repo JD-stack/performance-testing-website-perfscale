@@ -46,19 +46,27 @@ const handleDownload = async (id: string) => {
       },
     });
 
-    if (!res.ok) {
-      throw new Error("Download failed");
-    }
-
     const data = await res.json();
 
-    // This URL already forces attachment
-    window.location.href = data.downloadUrl;
+    const response = await fetch(data.downloadUrl);
+    const blob = await response.blob();
+
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "blog.pdf"; // optional
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
 
   } catch (error) {
-    console.error("Download error:", error);
+    console.error("Download failed:", error);
   }
 };
+
 
 
   /* ================= FETCH BLOGS ================= */
