@@ -53,7 +53,7 @@ export function NavBar() {
 
       <div className="flex items-center gap-6">
         <Link to="/">Home</Link>
-        <Link to="/services">Services</Link>
+        <Link to="/services">Capabilities</Link>
         <Link to="/about">About</Link>
         <Link to="/blog">Resources</Link>
 
