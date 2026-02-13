@@ -11,14 +11,6 @@ import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
 import { Button } from "../components/ui/button";
 import {
-  Award,
-  Users,
-  Target,
-  TrendingUp,
-  Shield,
-  Lightbulb,
-  Heart,
-  Zap,
   Mail,
   Phone,
   MapPin,
@@ -37,16 +29,14 @@ export function About() {
     message: "",
   });
 
-  /* ================= SUBMIT TO BACKEND ================= */
+  /* ================= SUBMIT ================= */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     try {
       const res = await fetch(`${API_URL}/api/contact`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
@@ -101,44 +91,50 @@ export function About() {
   ];
 
   return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <section className="bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] text-white py-16">
-        <div className="max-w-7xl mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4 text-white">
+    <div className="min-h-screen bg-gray-50">
+
+      {/* HERO SECTION */}
+      <section className="bg-gradient-to-br from-[#0f172a] via-[#1e3a8a] to-[#3b82f6] text-white py-24">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <h1 className="text-4xl lg:text-5xl font-bold mb-6">
             About PerfScale
           </h1>
-          <p className="text-xl text-blue-100 max-w-3xl">
-            Delivering world-class performance testing services since 2015
+          <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+            Delivering world-class performance engineering solutions
+            since 2015. Built for scale. Designed for reliability.
           </p>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Contact Form */}
+      {/* CONTACT SECTION */}
+      <section id="contact" className="py-24">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+            {/* FORM */}
             <div className="lg:col-span-2">
-              <Card className="border-2">
+              <Card className="shadow-xl border border-gray-200 rounded-2xl">
                 <CardHeader>
-                  <CardTitle className="text-2xl">
-                    Send us a message
+                  <CardTitle className="text-2xl font-semibold text-[#1e3a8a]">
+                    Send Us a Message
                   </CardTitle>
-                  <CardDescription>
-                    Fill out the form below and we'll get back to you within 24
-                    hours
+                  <CardDescription className="text-gray-600">
+                    We respond within 24 hours.
                   </CardDescription>
                 </CardHeader>
+
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    {/* Name + Email */}
+                    <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <Label>Full Name *</Label>
                         <Input
                           name="name"
                           value={formData.name}
                           onChange={handleChange}
+                          className="mt-2"
                           required
                         />
                       </div>
@@ -150,18 +146,21 @@ export function About() {
                           name="email"
                           value={formData.email}
                           onChange={handleChange}
+                          className="mt-2"
                           required
                         />
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Company + Phone */}
+                    <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <Label>Company</Label>
                         <Input
                           name="company"
                           value={formData.company}
                           onChange={handleChange}
+                          className="mt-2"
                         />
                       </div>
 
@@ -171,10 +170,12 @@ export function About() {
                           name="phone"
                           value={formData.phone}
                           onChange={handleChange}
+                          className="mt-2"
                         />
                       </div>
                     </div>
 
+                    {/* Message */}
                     <div>
                       <Label>Message *</Label>
                       <Textarea
@@ -182,45 +183,55 @@ export function About() {
                         rows={6}
                         value={formData.message}
                         onChange={handleChange}
+                        className="mt-2"
                         required
                       />
                     </div>
 
+                    {/* Submit */}
                     <Button
                       type="submit"
-                      className="w-full bg-[#1e3a8a] hover:bg-[#1e40af]"
+                      className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white py-6 text-lg rounded-xl transition-all duration-300"
                     >
                       <Send className="mr-2 h-5 w-5" />
                       Send Message
                     </Button>
+
                   </form>
                 </CardContent>
               </Card>
             </div>
 
-            {/* Contact Info */}
-            <div className="space-y-6">
-              <Card className="bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] text-white border-none">
+            {/* CONTACT INFO */}
+            <div>
+              <Card className="bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] text-white border-none shadow-xl rounded-2xl">
                 <CardHeader>
-                  <CardTitle className="text-white">
+                  <CardTitle className="text-white text-xl">
                     Contact Information
                   </CardTitle>
                   <CardDescription className="text-blue-100">
-                    We're here to help
+                    We’re here to help
                   </CardDescription>
                 </CardHeader>
+
                 <CardContent className="space-y-6">
                   {contactInfo.map((info, idx) => (
-                    <div key={idx} className="flex gap-4">
-                      <div className="bg-white/10 p-3 rounded-lg">
-                        <info.icon className="h-6 w-6" />
+                    <div key={idx} className="flex gap-4 items-start">
+                      <div className="bg-white/20 p-3 rounded-xl">
+                        <info.icon className="h-5 w-5" />
                       </div>
+
                       <div>
-                        <h4 className="font-semibold">{info.title}</h4>
+                        <h4 className="font-semibold mb-1">{info.title}</h4>
                         {info.link ? (
-                          <a href={info.link}>{info.content}</a>
+                          <a
+                            href={info.link}
+                            className="text-blue-100 hover:text-white transition-colors"
+                          >
+                            {info.content}
+                          </a>
                         ) : (
-                          <p>{info.content}</p>
+                          <p className="text-blue-100">{info.content}</p>
                         )}
                       </div>
                     </div>
@@ -228,6 +239,7 @@ export function About() {
                 </CardContent>
               </Card>
             </div>
+
           </div>
         </div>
       </section>
