@@ -55,7 +55,7 @@ export function AdminDashboard() {
       toast.success("PDF uploaded successfully!");
       setTitle("");
       setPdf(null);
-      setCategory("manual");
+      setCategory("fundamentals");
       if (fileInputRef.current) fileInputRef.current.value = "";
     } catch {
       toast.error("Server error during upload");
@@ -78,7 +78,7 @@ export function AdminDashboard() {
             <div>
               <Label>Blog Title</Label>
               <Input
-                placeholder="Enter blog title"
+                placeholder="Enter resource title"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
@@ -95,8 +95,8 @@ export function AdminDashboard() {
                 }
                 className="w-full border rounded-md px-3 py-2"
               >
-                <option value="manual">Performance Testing Fundamentals</option>
-                <option value="automation">Advanced JMeter Engineering</option>
+                <option value="fundamentals">Performance Testing Fundamentals</option>
+                <option value="advanced">Advanced JMeter Engineering</option>
               </select>
             </div>
 
