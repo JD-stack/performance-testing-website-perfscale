@@ -28,6 +28,7 @@ export default function Blog() {
     const viewerUrl = `https://docs.google.com/gview?url=${encodeURIComponent(
       pdfUrl
     )}&embedded=true`;
+
     window.open(viewerUrl, "_blank");
   };
 
@@ -45,7 +46,9 @@ export default function Blog() {
         },
       });
 
-      if (!res.ok) throw new Error("Download failed");
+      if (!res.ok) {
+        throw new Error("Download failed");
+      }
 
       const { downloadUrl } = await res.json();
 
@@ -80,109 +83,84 @@ export default function Blog() {
   }, [activeTab]);
 
   return (
-    <div className="bg-slate-50 min-h-screen">
-
-      {/* ================= HERO ================= */}
-      <section className="bg-gradient-to-br from-slate-900 via-indigo-900 to-blue-600 text-white py-20">
-        <div className="max-w-6xl mx-auto px-6 text-center">
-          <h1 className="text-4xl lg:text-5xl font-bold mb-4">
-            Resources & Insights
-          </h1>
-          <p className="text-blue-100 max-w-2xl mx-auto">
-            Explore performance engineering fundamentals, advanced strategies,
-            and expert knowledge.
-          </p>
-        </div>
-      </section>
-
+    <div className="min-h-screen bg-[#1e3a8a]">
       {/* ================= TABS ================= */}
-      <div className="max-w-6xl mx-auto px-6 pt-12">
-        <div className="flex flex-wrap gap-4 justify-center">
-          <Button
-            variant={activeTab === "fundamentals" ? "default" : "outline"}
-            className="rounded-xl px-6 py-5"
-            onClick={() => setActiveTab("fundamentals")}
-          >
-            Fundamentals
-          </Button>
+      <div className="px-6 pt-6 flex gap-4">
+        <Button
+          variant={activeTab === "fundamentals" ? "default" : "outline"}
+          onClick={() => setActiveTab("fundamentals")}
+        >
+          Performance Testing Fundamentals
+        </Button>
 
-          <Button
-            variant={activeTab === "advanced" ? "default" : "outline"}
-            className="rounded-xl px-6 py-5"
-            onClick={() => setActiveTab("advanced")}
-          >
-            Advanced Engineering
-          </Button>
+        <Button
+          variant={activeTab === "advanced" ? "default" : "outline"}
+          onClick={() => setActiveTab("advanced")}
+        >
+          Advanced JMeter Engineering
+        </Button>
 
-          <Button
-            variant={activeTab === "all" ? "default" : "outline"}
-            className="rounded-xl px-6 py-5"
-            onClick={() => setActiveTab("all")}
-          >
-            All Resources
-          </Button>
-        </div>
+        <Button
+          variant={activeTab === "all" ? "default" : "outline"}
+          onClick={() => setActiveTab("all")}
+        >
+          All Resources
+        </Button>
       </div>
 
       {/* ================= CONTENT ================= */}
-      <div className="max-w-6xl mx-auto px-6 py-16">
-
-        {/* FUNDAMENTALS */}
+      <div className="px-6 pt-6 pb-10">
+        {/* ================= FUNDAMENTALS ================= */}
         {activeTab === "fundamentals" && (
-          <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200">
+          <>
             <iframe
               src="/docs/Generating and Analyzing HTML Reports in JMeter.htm"
-              className="w-full"
-              style={{ height: "120vh" }}
+              className="w-full border rounded-lg"
+              style={{ height: "140vh" }}
             />
-          </div>
+          </>
         )}
 
-        {/* ADVANCED */}
+        {/* ================= ADVANCED ================= */}
         {activeTab === "advanced" && (
-          <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-200">
+          <>
             <iframe
               src="/docs/The 7 Most Useful JMeter Plugins.htm"
-              className="w-full"
-              style={{ height: "120vh" }}
+              className="w-full border rounded-lg"
+              style={{ height: "140vh" }}
             />
-          </div>
+          </>
         )}
 
-        {/* ALL BLOGS */}
+        {/* ================= ALL BLOGS ================= */}
         {activeTab === "all" && (
           <>
-            {loading && (
-              <p className="text-center text-gray-500 py-10">
-                Loading resources...
-              </p>
-            )}
+            {loading && <p className="text-gray-500">Loading blogs…</p>}
 
             {!loading && blogs.length === 0 && (
-              <p className="text-center text-gray-500 py-10">
-                No resources uploaded yet.
-              </p>
+              <p className="text-gray-500">No blogs uploaded yet.</p>
             )}
 
             {!loading && blogs.length > 0 && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {blogs.map((blog) => (
                   <div
                     key={blog._id}
-                    className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 hover:-translate-y-2 border border-slate-200 p-6 flex flex-col justify-between"
+                    className="bg-white border rounded-xl shadow-sm p-6 flex flex-col justify-between"
                   >
                     <div>
-                      <h3 className="text-lg font-semibold text-slate-800 mb-3">
+                      <h3 className="text-lg font-semibold text-gray-800 mb-2">
                         {blog.title}
                       </h3>
 
+                      {/* CATEGORY BADGE */}
                       <span
-                        className={`inline-block px-3 py-1 text-xs font-medium rounded-full mb-6
-                        ${
-                          blog.category === "fundamentals"
-                            ? "bg-blue-100 text-blue-700"
-                            : "bg-purple-100 text-purple-700"
-                        }`}
+                        className={`inline-block px-3 py-1 text-xs font-medium rounded-full mb-4
+                          ${
+                            blog.category === "fundamentals"
+                              ? "bg-blue-100 text-blue-700"
+                              : "bg-purple-100 text-purple-700"
+                          }`}
                       >
                         {blog.category === "fundamentals"
                           ? "Performance Testing Fundamentals"
@@ -193,14 +171,12 @@ export default function Blog() {
                     <div className="flex gap-3">
                       <Button
                         variant="outline"
-                        className="rounded-xl flex-1"
                         onClick={() => handlePreview(blog.pdfUrl)}
                       >
                         Preview
                       </Button>
 
                       <Button
-                        className="rounded-xl flex-1"
                         onClick={() => handleDownload(blog._id)}
                       >
                         Download
@@ -216,6 +192,12 @@ export default function Blog() {
     </div>
   );
 }
+
+
+
+
+
+
 
 
 
