@@ -79,6 +79,29 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: "Failed to fetch blogs" });
   }
 });
+/* ================= SECURE DOWNLOAD ================= */
+router.get("/download/:id", async (req, res) => {
+  try {
+    const blog = await Blog.findById(req.params.id);
+
+    if (!blog) {
+      return res.status(404).json({ message: "Blog not found" });
+    }
+
+    // Generate secure download URL with attachment
+    const downloadUrl = cloudinary.url(blog.publicId, {
+      resource_type: "raw",
+      flags: "attachment",
+      attachment: blog.originalName, // forces filename
+    });
+
+    res.json({ downloadUrl });
+
+  } catch (error) {
+    console.error("Download error:", error);
+    res.status(500).json({ message: "Download failed" });
+  }
+});
 
 module.exports = router;
 
