@@ -13,48 +13,49 @@ import { Button } from '../components/ui/button';
 import { Link } from 'react-router-dom';
 
 export function Services() {
+
   const testingTypes = [
     {
       icon: Target,
-      title: 'Load Testing',
-      description: 'Measure application behavior under expected user loads',
+      title: 'Load Testing Strategy',
+      description: 'Validate system performance under expected user loads and real-world traffic patterns.',
       features: [
         'Concurrent user simulation',
-        'Response time analysis',
+        'Response time benchmarking',
         'Throughput measurement',
-        'Resource utilization tracking'
+        'Resource utilization monitoring'
       ]
     },
     {
       icon: LineChart,
-      title: 'Stress Testing',
-      description: 'Determine application breaking points and limits',
+      title: 'Stress & Resilience Testing',
+      description: 'Identify system limits and evaluate stability under extreme conditions.',
       features: [
         'Beyond-capacity testing',
         'Failure point identification',
-        'Recovery testing',
-        'System stability analysis'
+        'Recovery validation',
+        'System stability assessment'
       ]
     },
     {
       icon: BarChart3,
-      title: 'Spike Testing',
-      description: 'Evaluate response to sudden traffic increases',
+      title: 'Traffic Surge Simulation',
+      description: 'Assess system behavior during sudden traffic spikes and peak demand.',
       features: [
         'Rapid load variation testing',
         'Auto-scaling validation',
         'Peak traffic simulation',
-        'Response elasticity checks'
+        'Elasticity verification'
       ]
     },
     {
       icon: ClipboardList,
-      title: 'Soak Testing',
-      description: 'Assess long-term stability and performance',
+      title: 'Endurance & Stability Testing',
+      description: 'Ensure long-term reliability under sustained load conditions.',
       features: [
         'Extended duration testing',
         'Memory leak detection',
-        'Performance degradation analysis',
+        'Performance degradation tracking',
         'Sustained load validation'
       ]
     }
@@ -64,79 +65,82 @@ export function Services() {
     {
       step: '01',
       title: 'Requirements Analysis',
-      description: 'Understanding your application, user patterns, and performance goals'
+      description: 'Understanding application architecture, user behavior, and performance objectives.'
     },
     {
       step: '02',
       title: 'Test Planning',
-      description: 'Designing comprehensive test scenarios and selecting appropriate tools'
+      description: 'Designing realistic performance scenarios aligned with business goals.'
     },
     {
       step: '03',
       title: 'Environment Setup',
-      description: 'Configuring test environments that mirror production conditions'
+      description: 'Configuring environments that closely mirror production systems.'
     },
     {
       step: '04',
-      title: 'Test Execution',
-      description: 'Running performance tests and monitoring system metrics'
+      title: 'Execution & Monitoring',
+      description: 'Running structured tests while capturing critical system metrics.'
     },
     {
       step: '05',
       title: 'Analysis & Reporting',
-      description: 'Analyzing results and providing detailed performance insights'
+      description: 'Delivering actionable insights based on data-driven analysis.'
     },
     {
       step: '06',
-      title: 'Optimization',
-      description: 'Implementing recommendations and validating improvements'
+      title: 'Optimization & Validation',
+      description: 'Implementing improvements and validating measurable performance gains.'
     }
   ];
 
   const deliverables = [
-    'Comprehensive test reports with performance metrics',
-    'Detailed analysis of bottlenecks and issues',
+    'Comprehensive performance reports with key metrics',
+    'Detailed bottleneck and risk analysis',
     'Actionable optimization recommendations',
     'Performance benchmark documentation',
     'Executive summary for stakeholders',
-    'Test scripts and configurations for future use'
+    'Reusable test scripts and configurations'
   ];
 
   return (
     <div className="min-h-screen">
+
       {/* Header */}
-      <section className="bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] text-white py-16">
+      <section className="bg-gradient-to-br from-[#0f172a] via-[#1e3a8a] to-[#3b82f6] text-white py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl lg:text-5xl font-bold mb-4 text-white">Our Services</h1>
+          <h1 className="text-4xl lg:text-5xl font-bold mb-4 text-white">
+            Our Capabilities
+          </h1>
           <p className="text-xl text-blue-100 max-w-3xl">
-            Comprehensive performance testing services tailored to your specific needs and industry requirements.
+            Comprehensive performance engineering capabilities tailored to your application, scale, and business objectives.
           </p>
         </div>
       </section>
 
-      {/* Performance Testing Overview */}
+      {/* Overview */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-[#1e3a8a] mb-6">
-              Performance Testing Overview
+              Performance Engineering Overview
             </h2>
             <p className="text-lg text-gray-700 leading-relaxed">
-              Performance testing is critical for ensuring your applications can handle real-world usage patterns. 
-              Our comprehensive approach evaluates speed, scalability, and stability under various conditions, 
-              helping you deliver exceptional user experiences and prevent costly downtime.
+              Performance engineering ensures applications can scale efficiently, remain stable under load,
+              and deliver consistent user experiences. Our structured approach evaluates speed, scalability,
+              and resilience under real-world scenarios.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <Card className="border-2 hover:border-[#3b82f6] transition-colors">
               <CardHeader>
                 <Target className="h-10 w-10 text-[#3b82f6] mb-2" />
-                <CardTitle>Accuracy</CardTitle>
+                <CardTitle>Precision</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">
-                  Precise measurements and realistic test scenarios ensure accurate performance insights.
+                  Accurate measurements and realistic simulations ensure reliable performance insights.
                 </p>
               </CardContent>
             </Card>
@@ -148,7 +152,7 @@ export function Services() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">
-                  Test your system's ability to scale from hundreds to millions of users.
+                  Validate system growth from hundreds to millions of users.
                 </p>
               </CardContent>
             </Card>
@@ -160,7 +164,7 @@ export function Services() {
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">
-                  Identify and eliminate potential failures before they impact your users.
+                  Detect vulnerabilities early and eliminate performance risks.
                 </p>
               </CardContent>
             </Card>
@@ -168,15 +172,15 @@ export function Services() {
         </div>
       </section>
 
-      {/* Testing Types */}
+      {/* Capabilities */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl lg:text-4xl font-bold text-[#1e3a8a] mb-4">
-              Testing Types
+              Core Performance Testing Capabilities
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              We offer specialized testing services for every performance scenario
+              Specialized performance assessments tailored to diverse system demands.
             </p>
           </div>
 
@@ -212,48 +216,18 @@ export function Services() {
         </div>
       </section>
 
-      {/* Methodology */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl lg:text-4xl font-bold text-[#1e3a8a] mb-4">
-              Our Methodology
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              A proven six-step process to ensure thorough and effective performance testing
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {methodology.map((item, index) => (
-              <Card key={index} className="relative overflow-hidden hover:shadow-lg transition-shadow">
-                <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[#3b82f6]/10 to-transparent rounded-bl-full" />
-                <CardHeader>
-                  <div className="text-5xl font-bold text-[#3b82f6]/20 mb-2">
-                    {item.step}
-                  </div>
-                  <CardTitle className="text-xl">{item.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-gray-600">{item.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Deliverables */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl lg:text-4xl font-bold text-[#1e3a8a] mb-6">
-                Deliverables
+                Engagement Deliverables
               </h2>
               <p className="text-lg text-gray-600 mb-8">
-                Every engagement includes comprehensive documentation and actionable insights to drive performance improvements.
+                Each engagement includes comprehensive documentation and actionable insights.
               </p>
+
               <div className="space-y-4">
                 {deliverables.map((item, index) => (
                   <div key={index} className="flex items-start gap-3">
@@ -266,25 +240,29 @@ export function Services() {
 
             <Card className="bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] text-white border-none">
               <CardHeader>
-                <CardTitle className="text-2xl text-white">Ready to Optimize Performance?</CardTitle>
+                <CardTitle className="text-2xl text-white">
+                  Ready to Optimize Performance?
+                </CardTitle>
                 <CardDescription className="text-blue-100">
-                  Get started with a comprehensive performance testing assessment
+                  Start with a structured performance assessment today.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent>
                 <Link to="/contact">
                   <Button className="w-full bg-white text-[#1e3a8a] hover:bg-gray-100">
                     Request a Consultation
                   </Button>
                 </Link>
-                <p className="text-sm text-blue-100 text-center">
+                <p className="text-sm text-blue-100 text-center mt-4">
                   Free initial assessment • No commitment required
                 </p>
               </CardContent>
             </Card>
+
           </div>
         </div>
       </section>
+
     </div>
   );
 }
