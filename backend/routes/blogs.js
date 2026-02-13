@@ -92,6 +92,7 @@ router.get("/download/:id",userAuth, async (req, res) => {
     // Generate secure download URL with attachment
     const downloadUrl = cloudinary.url(blog.publicId, {
       resource_type: "raw",
+      type:"upload",
       flags: "attachment",
       attachment: blog.originalName, // forces filename
     });
