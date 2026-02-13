@@ -27,7 +27,7 @@ export function AdminDashboard() {
     e.preventDefault();
 
     if (!title || !pdf) {
-      toast.error("Blog title and PDF are required");
+      toast.error("Resource title and PDF are required");
       return;
     }
 
@@ -91,12 +91,12 @@ export function AdminDashboard() {
               <select
                 value={category}
                 onChange={(e) =>
-                  setCategory(e.target.value as "manual" | "automation")
+                  setCategory(e.target.value as "fundamentals" | "advanced")
                 }
                 className="w-full border rounded-md px-3 py-2"
               >
-                <option value="manual">Manual Testers</option>
-                <option value="automation">Automation Architects</option>
+                <option value="manual">Performance Testing Fundamentals</option>
+                <option value="automation">Advanced JMeter Engineering</option>
               </select>
             </div>
 
