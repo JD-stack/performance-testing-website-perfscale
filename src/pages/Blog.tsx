@@ -185,13 +185,16 @@ const handleDownload = async (id: string) => {
                         onClick={() => handlePreview(blog.pdfUrl)}
                       >
                         Preview
-                      </Button>
+                  <Button
+  onClick={() => {
+    console.log("BLOG OBJECT:", blog);
+    console.log("BLOG ID:", blog._id);
+    handleDownload(blog._id);
+  }}
+>
+  Download
+</Button>
 
-                      <Button
-                        onClick={() => handleDownload(blog._id)}
-                      >
-                        Download
-                      </Button>
                     </div>
                   </div>
                 ))}
