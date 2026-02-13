@@ -46,7 +46,7 @@ router.post(
         {
           resource_type: "raw",
           folder: "perfscale_blogs",
-          allowed_formats: ["pdf","doc","docx"],
+          allowed_formats: ["pdf"]
         }
       );
 
