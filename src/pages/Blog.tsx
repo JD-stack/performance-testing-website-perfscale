@@ -33,15 +33,41 @@ export default function Blog() {
   };
 
   /* ================= DOWNLOAD (AUTH-GUARDED) ================= */
-  const handleDownload = (pdfUrl: string) => {
-    if (!isLoggedIn()) {
-      navigate("/login");
-      return;
-    }
+ const handleDownload = async (pdfUrl: string, fileName: string) => {
+  if (!isLoggedIn()) {
+    navigate("/login");
+    return;
+  }
 
-    // Cloudinary + browser will handle filename correctly
-    window.open(pdfUrl, "_blank");
-  };
+  try {
+    // Force Cloudinary to send file as downloadable attachment
+    const downloadUrl = pdfUrl.replace(
+      "/upload/",
+      `/upload/fl_attachment:${fileName}/`
+    );
+
+    const response = await fetch(downloadUrl);
+    const blob = await response.blob();
+
+    const link = document.createElement("a");
+    link.href = window.URL.createObjectURL(blob);
+
+    // Ensure filename has .pdf
+    link.download = fileName.endsWith(".pdf")
+      ? fileName
+      : `${fileName}.pdf`;
+
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(link.href);
+
+  } catch (error) {
+    console.error("Download failed:", error);
+  }
+};
+
 
   /* ================= FETCH BLOGS ================= */
   const fetchBlogs = async () => {
@@ -164,7 +190,7 @@ export default function Blog() {
                       </Button>
 
                       <Button
-                        onClick={() => handleDownload(blog.pdfUrl)}
+                        onClick={() => handleDownload(blog.pdfUrl,blog.originalName)}
                       >
                         Download
                       </Button>
