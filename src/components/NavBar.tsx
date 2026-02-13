@@ -56,7 +56,6 @@ export function NavBar() {
         <Link to="/services">Capabilities</Link>
         <Link to="/about">About</Link>
         <Link to="/blog">Resources</Link>
-
         {!account ? (
           <>
             <Link to="/login">Login</Link>
