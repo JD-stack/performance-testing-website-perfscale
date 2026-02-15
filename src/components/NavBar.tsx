@@ -37,8 +37,9 @@ export function NavBar() {
   };
 
   return (
-    <nav className="w-full flex items-center justify-between px-8 py-4 bg-[#0f2f7a] text-white shadow-md">
-      
+    {/* <nav className="w-full flex items-center justify-between px-8 py-4 bg-[#0f2f7a] text-white shadow-md"> */}
+      <nav className="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-8 py-4 bg-[#0f2f7a] text-white shadow-md">
+
       {/* Logo */}
       <Link to="/" className="text-xl font-bold text-white">
         PerfScale
