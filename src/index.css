@@ -1715,8 +1715,8 @@
 
 :root {
   --font-size: 16px;
-  --background: #fff;
-  --foreground: #0f172a;
+  --background: #ffffff;
+--foreground: #0f172a;
   --card: #fff;
   --card-foreground: #0f172a;
   --popover: #fff;
