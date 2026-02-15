@@ -39,6 +39,18 @@ export default function App() {
         <Toaster />
       </div>
     </Router>
+    <Route path="/posts" element={<Posts />} />
+<Route path="/posts/:id" element={<PostView />} />
+
+<Route
+  path="/admin/posts/new"
+  element={
+    <AdminRoute>
+      <PostEditor />
+    </AdminRoute>
+  }
+/>
+
   );
 }
 
