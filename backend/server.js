@@ -15,6 +15,7 @@ app.use(express.json());
 app.use("/api/blogs", require("./routes/blogs"));
 app.use("/api/auth", authRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/posts", require("./routes/posts"));
 
 // Health check
 app.get("/", (req, res) => {
@@ -37,6 +38,7 @@ mongoose
     console.error("MongoDB connection failed:", err);
     process.exit(1);
   });
+
 
 
 
