@@ -18,7 +18,7 @@ export default function BlogPage() {
 
       <div className="grid md:grid-cols-3 gap-6">
         {posts.map((post: any) => (
-          <Link to={`/blog/${post._id}`} key={post._id}>
+          <Link to={`/posts/${post._id}`} key={post._id}>
             <div className="bg-gray-900 rounded-xl overflow-hidden shadow-lg">
               <img src={post.thumbnail} className="w-full h-48 object-cover" />
               <div className="p-4">
