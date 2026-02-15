@@ -13,7 +13,14 @@ export default function SinglePost() {
       .then(setPost);
   }, [id]);
 
-  if (!post) return null;
+  if (!post) {
+  return (
+    <div className="bg-[#0f172a] min-h-screen text-white flex items-center justify-center">
+      <p className="text-gray-400 text-lg">Loading post...</p>
+    </div>
+  );
+}
+
 
   return (
     <div className="bg-[#0f172a] min-h-screen text-white p-10">
