@@ -22,7 +22,7 @@ export default function App() {
       <div className="flex flex-col min-h-screen">
         <NavBar />
 
-        <main className="flex-grow min-h-screen overflow-visible pt-20">
+        <main className="flex-grow min-h-screen overflow-visible pt-16">
           <Routes>
             {/* Public Pages */}
             <Route path="/" element={<Home />} />
