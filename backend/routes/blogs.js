@@ -45,16 +45,22 @@ router.post(
         {
           resource_type: "raw",
           folder: "perfscale_blogs",
-          allowed_formats: ["pdf"]
+          allowed_formats: ["pdf"],
         }
       );
 
+      // Ensure original filename always ends with .pdf
+      let originalName = req.file.originalname;
+      if (!originalName.toLowerCase().endsWith(".pdf")) {
+        originalName = originalName + ".pdf";
+      }
+
       const blog = await Blog.create({
         title,
-        category, // manual | automation
+        category,
         pdfUrl: uploadResult.secure_url,
         publicId: uploadResult.public_id,
-        originalName: req.file.originalname, // keeps .pdf
+        originalName,
       });
 
       res.status(201).json({
@@ -78,9 +84,11 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: "Failed to fetch blogs" });
   }
 });
+
 /* ================= SECURE DOWNLOAD ================= */
 const userAuth = require("../middleware/userAuth");
-router.get("/download/:id",userAuth, async (req, res) => {
+
+router.get("/download/:id", userAuth, async (req, res) => {
   try {
     const blog = await Blog.findById(req.params.id);
 
@@ -88,16 +96,26 @@ router.get("/download/:id",userAuth, async (req, res) => {
       return res.status(404).json({ message: "Blog not found" });
     }
 
-    // Generate secure download URL with attachment
-    const downloadUrl = cloudinary.url(blog.publicId, {
+    // Ensure the download filename always has .pdf extension
+    let downloadFilename = blog.originalName || blog.title;
+    if (!downloadFilename.toLowerCase().endsWith(".pdf")) {
+      downloadFilename = downloadFilename + ".pdf";
+    }
+
+    // Build the Cloudinary public_id with .pdf extension explicitly appended
+    // Cloudinary raw assets need the extension in the public_id for proper download
+    const publicIdWithExt = blog.publicId.endsWith(".pdf")
+      ? blog.publicId
+      : blog.publicId + ".pdf";
+
+    // Generate secure download URL
+    const downloadUrl = cloudinary.url(publicIdWithExt, {
       resource_type: "raw",
-      type:"upload",
-      flags: "attachment",
-      attachment: blog.originalName, // forces filename
+      type: "upload",
+      flags: `attachment:${downloadFilename.replace(/\s+/g, "_")}`,
     });
 
     res.json({ downloadUrl });
-
   } catch (error) {
     console.error("Download error:", error);
     res.status(500).json({ message: "Download failed" });
@@ -105,4 +123,3 @@ router.get("/download/:id",userAuth, async (req, res) => {
 });
 
 module.exports = router;
-
