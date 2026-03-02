@@ -93,7 +93,7 @@ export function NavBar() {
             {account.role === "admin" && (
               <>
                 <Link to="/admin">
-                  <Button variant="outline" className="border-white text-white hover:bg-white hover:text-[#0f2f7a] whitespace-nowrap">
+                  <Button variant="outline" className="!border-white !text-white hover:!bg-white hover:!text-[#0f2f7a] whitespace-nowrap bg-transparent">
                     Dashboard
                   </Button>
                 </Link>
@@ -109,7 +109,7 @@ export function NavBar() {
             <Button
               variant="outline"
               onClick={handleLogout}
-              className="border-white text-white hover:bg-white hover:text-[#0f2f7a] whitespace-nowrap"
+              className="!border-white !text-white hover:!bg-white hover:!text-[#0f2f7a] whitespace-nowrap bg-transparent"
             >
               Logout
             </Button>
