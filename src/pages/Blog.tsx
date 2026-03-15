@@ -50,10 +50,8 @@ export default function Blog() {
         throw new Error("Download failed");
       }
 
-      const { downloadUrl, filename } = await res.json();
 
-      const { downloadUrl, filename } = await res.json();
-
+const { downloadUrl, filename } = await res.json();
 const fileRes = await fetch(downloadUrl);
 const blob = await fileRes.blob();
 const blobUrl = URL.createObjectURL(blob);
