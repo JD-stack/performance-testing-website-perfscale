@@ -94,18 +94,14 @@ router.get("/download/:id", userAuth, async (req, res) => {
       return res.status(404).json({ message: "Blog not found" });
     }
 
-    const publicIdWithExt = blog.publicId.endsWith(".pdf")
-      ? blog.publicId
-      : blog.publicId + ".pdf";
-
-    const downloadUrl = cloudinary.utils.private_download_url(
-      publicIdWithExt,
-      "pdf",
-      {
-        resource_type: "raw",
-        attachment: true,
-      }
-    );
+const downloadUrl = cloudinary.utils.private_download_url(
+  blog.publicId,
+  "pdf",
+  {
+    resource_type: "raw",
+    attachment: true,
+  }
+);
 
     res.json({ downloadUrl });
   } catch (error) {
