@@ -99,7 +99,7 @@ const downloadUrl = cloudinary.url(blog.publicId, {
   type: "upload",
   sign_url: true,
   secure: true,
-  flags: `attachment:${(blog.originalName || blog.title).replace(/\s+/g, "_")}`,
+  flags: "attachment",
 });
 
     res.json({ downloadUrl });
