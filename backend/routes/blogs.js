@@ -101,8 +101,11 @@ const downloadUrl = cloudinary.url(blog.publicId, {
   secure: true,
   flags: "attachment",
 });
+ res.json({
+      downloadUrl,
+      filename: (blog.originalName || blog.title).replace(/[^a-zA-Z0-9._-]/g, "_") + (blog.originalName?.endsWith(".pdf") ? "" : ".pdf")
+    });
 
-    res.json({ downloadUrl });
   } catch (error) {
     console.error("Download error:", error);
     res.status(500).json({ message: "Download failed" });
