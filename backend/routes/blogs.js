@@ -39,7 +39,6 @@ router.post(
         });
       }
 
-      // Upload PDF to Cloudinary
       const uploadResult = await cloudinary.uploader.upload(
         `data:application/pdf;base64,${req.file.buffer.toString("base64")}`,
         {
@@ -49,7 +48,6 @@ router.post(
         }
       );
 
-      // Ensure original filename always ends with .pdf
       let originalName = req.file.originalname;
       if (!originalName.toLowerCase().endsWith(".pdf")) {
         originalName = originalName + ".pdf";
@@ -96,24 +94,18 @@ router.get("/download/:id", userAuth, async (req, res) => {
       return res.status(404).json({ message: "Blog not found" });
     }
 
-    // Ensure the download filename always has .pdf extension
-    let downloadFilename = blog.originalName || blog.title;
-    if (!downloadFilename.toLowerCase().endsWith(".pdf")) {
-      downloadFilename = downloadFilename + ".pdf";
-    }
-
-    // Build the Cloudinary public_id with .pdf extension explicitly appended
-    // Cloudinary raw assets need the extension in the public_id for proper download
     const publicIdWithExt = blog.publicId.endsWith(".pdf")
       ? blog.publicId
       : blog.publicId + ".pdf";
 
-    // Generate secure download URL
-    const downloadUrl = cloudinary.url(publicIdWithExt, {
-      resource_type: "raw",
-      type: "upload",
-      flags: `attachment:${downloadFilename.replace(/\s+/g, "_")}`,
-    });
+    const downloadUrl = cloudinary.utils.private_download_url(
+      publicIdWithExt,
+      "pdf",
+      {
+        resource_type: "raw",
+        attachment: true,
+      }
+    );
 
     res.json({ downloadUrl });
   } catch (error) {
