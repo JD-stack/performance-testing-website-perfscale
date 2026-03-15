@@ -50,7 +50,7 @@ export default function Blog() {
         throw new Error("Download failed");
       }
 
-      const { downloadUrl } = await res.json();
+      const { downloadUrl,filename } = await res.json();
 
       const link = document.createElement("a");
       link.href = downloadUrl;
