@@ -50,15 +50,21 @@ export default function Blog() {
         throw new Error("Download failed");
       }
 
-      const { downloadUrl,filename } = await res.json();
+      const { downloadUrl, filename } = await res.json();
 
-      const link = document.createElement("a");
-      link.href = downloadUrl;
-      link.rel = "noopener";
-      link.target = "_self";
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      const { downloadUrl, filename } = await res.json();
+
+const fileRes = await fetch(downloadUrl);
+const blob = await fileRes.blob();
+const blobUrl = URL.createObjectURL(blob);
+
+const link = document.createElement("a");
+link.href = blobUrl;
+link.download = filename;
+document.body.appendChild(link);
+link.click();
+document.body.removeChild(link);
+URL.revokeObjectURL(blobUrl);
     } catch (error) {
       console.error("Download error:", error);
     }
