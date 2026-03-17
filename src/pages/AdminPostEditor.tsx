@@ -103,7 +103,7 @@ export default function AdminPostEditor() {
   };
 
   return (
-    <div className="p-10 bg-[#0f172a] min-h-screen text-white">
+    <div className="p-10 bg-[#0f172a] min-h-screen text-white pb-20">
       <h1 className="text-3xl font-bold mb-8">Create Blog Post</h1>
 
       <div className="max-w-4xl space-y-6">
@@ -130,15 +130,20 @@ export default function AdminPostEditor() {
 
         <div>
           <Label className="text-white mb-2 block">Thumbnail Image *</Label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setThumbnail(e.target.files?.[0] || null)}
-            className="text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-blue-600 file:text-white file:cursor-pointer hover:file:bg-blue-700"
-          />
-          {thumbnail && (
-            <p className="text-sm text-gray-400 mt-1">Selected: {thumbnail.name}</p>
-          )}
+         <div className="flex items-center gap-4">
+  <label className="cursor-pointer bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded text-sm font-medium">
+    Choose File
+    <input
+      type="file"
+      accept="image/*"
+      className="hidden"
+      onChange={(e) => setThumbnail(e.target.files?.[0] || null)}
+    />
+  </label>
+  <span className="text-gray-400 text-sm">
+    {thumbnail ? thumbnail.name : "No file chosen"}
+  </span>
+</div>
         </div>
 
         <div>
