@@ -156,7 +156,7 @@ export default function AdminPostEditor() {
                 modules={quillModules}
                 formats={quillFormats}
                 placeholder="Write your post content here..."
-                style={{ backgroundColor: "white", color: "#0f172a", minHeight: "300px" }}
+                style={{ backgroundColor: "white", color: "#0f172a", minHeight: "300px", maxWidth: "100%" }}
               />
             </Suspense>
           </div>
@@ -171,13 +171,12 @@ export default function AdminPostEditor() {
             {loading ? "Publishing…" : "Publish Post"}
           </Button>
 
-          <Button
-            variant="outline"
-            onClick={() => navigate("/posts")}
-            className="border-gray-500 text-gray-300 hover:bg-gray-800"
-          >
-            Cancel
-          </Button>
+        <Button
+        variant="outline"
+        onClick={() => navigate("/posts")}
+        className="!border-gray-500 !text-gray-300 hover:!bg-gray-800 bg-transparent">
+  Cancel
+</Button>
         </div>
 
       </div>
