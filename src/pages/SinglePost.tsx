@@ -27,36 +27,38 @@ export default function SinglePost() {
   }
 
   return (
-    <div className="bg-[#0f172a] min-h-screen text-white flex flex-col">
-      {/* 1. Controlled Thumbnail Header */}
-      <div className="relative w-full h-[250px] md:h-[400px] overflow-hidden shadow-2xl">
-        <img 
-          src={post.thumbnail} 
-          alt={post.title}
-          className="w-full h-full object-cover" 
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/20 to-transparent" />
-      </div>
-
-      {/* 2. Blog Content Area */}
-      <div className="max-w-4xl mx-auto w-full px-6 py-10 flex-grow">
-        <div className="mb-8">
-          <h1 className="text-3xl md:text-5xl font-bold leading-tight">
-            {post.title}
-          </h1>
-          <p className="text-gray-400 mt-3 text-lg font-medium">
-            By {post.author}
-          </p>
-        </div>
-
-        <hr className="border-gray-800 mb-10" />
-
-        {/* 3. Rendered Content */}
-        <div
-          dangerouslySetInnerHTML={{ __html: post.content }}
-          className="prose prose-invert max-w-none text-gray-300 text-lg leading-relaxed mb-20"
-        />
-      </div>
+  <div className="bg-[#0f172a] min-h-screen text-white flex flex-col">
+    {/* 1. Controlled Thumbnail Header - Added max-h and strict overflow */}
+    <div className="relative w-full h-[300px] md:h-[400px] max-h-[50vh] overflow-hidden shadow-2xl">
+      <img 
+        src={post.thumbnail} 
+        alt={post.title}
+        // Force the image to cover the box without stretching
+        className="absolute inset-0 w-full h-full object-cover object-center" 
+      />
+      {/* Darker gradient to blend the bottom of the image into the background */}
+      <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent" />
     </div>
-  );
+
+    {/* 2. Blog Content Area */}
+    <div className="max-w-4xl mx-auto w-full px-6 py-10 flex-grow relative z-10">
+      <div className="mb-8">
+        <h1 className="text-3xl md:text-5xl font-bold leading-tight drop-shadow-md">
+          {post.title}
+        </h1>
+        <p className="text-gray-400 mt-3 text-lg font-medium">
+          By {post.author}
+        </p>
+      </div>
+
+      <hr className="border-gray-800 mb-10" />
+
+      {/* 3. Rendered Content */}
+      <div
+        dangerouslySetInnerHTML={{ __html: post.content }}
+        className="prose prose-invert max-w-none text-gray-300 text-lg leading-relaxed mb-20"
+      />
+    </div>
+  </div>
+);
 }
