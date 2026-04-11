@@ -16,7 +16,7 @@ import {
   MapPin,
   Send,
 } from "lucide-react";
-import { toast } from "sonner"; // Standardized import
+import { toast } from "sonner";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -31,115 +31,187 @@ export function About() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     try {
       const res = await fetch(`${API_URL}/api/contact`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(formData),
       });
 
       const data = await res.json();
+
       if (!res.ok) {
         toast.error(data.message || "Failed to send message");
         return;
       }
 
-      toast.success("Message sent successfully!");
-      setFormData({ name: "", email: "", company: "", phone: "", message: "" });
+      toast.success("Message sent successfully! We'll get back to you soon.");
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        phone: "",
+        message: "",
+      });
     } catch {
       toast.error("Server unreachable. Please try again later.");
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
   const contactInfo = [
-    { icon: Mail, title: "Email", content: "contact@perfscale.com", link: "mailto:contact@perfscale.com" },
-    { icon: Phone, title: "Phone", content: "+1 (555) 123-4567", link: "tel:+15551234567" },
-    { icon: MapPin, title: "Office", content: "123 Tech Boulevard, SF, CA", link: null },
+    {
+      icon: Mail,
+      title: "Email",
+      content: "contact@perfscale.com",
+      link: "mailto:contact@perfscale.com",
+    },
+    {
+      icon: Phone,
+      title: "Phone",
+      content: "+1 (555) 123-4567",
+      link: "tel:+15551234567",
+    },
+    {
+      icon: MapPin,
+      title: "Office",
+      content: "123 Tech Boulevard, San Francisco, CA 94105",
+      link: null,
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header - Corrected to Deep Navy */}
-      <section className="bg-[#0f172a] text-white py-24 border-b border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 text-center md:text-left">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+    <div className="min-h-screen">
+      {/* Header - Reverted to your structure, changed to Deep Blue */}
+      <section className="bg-[#1e3a8a] text-white py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <h1 className="text-4xl font-bold mb-4 text-white">
             About PerfScale
           </h1>
-          <p className="text-xl text-gray-400 max-w-3xl">
-            Delivering world-class performance testing services since 2015.
+          <p className="text-xl text-blue-100 max-w-3xl">
+            Delivering world-class performance testing services since 2015
           </p>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-20">
+      {/* Contact Section - Reverted to your original layout */}
+      <section id="contact" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            
             {/* Contact Form */}
             <div className="lg:col-span-2">
-              <Card className="border-gray-200 shadow-sm">
+              <Card className="border-2">
                 <CardHeader>
-                  <CardTitle className="text-2xl text-[#0f172a]">Send us a message</CardTitle>
-                  <CardDescription>Fill out the form below and we'll get back to you within 24 hours.</CardDescription>
+                  <CardTitle className="text-2xl">
+                    Send us a message
+                  </CardTitle>
+                  <CardDescription>
+                    Fill out the form below and we'll get back to you within 24
+                    hours
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
+                      <div>
                         <Label>Full Name *</Label>
-                        <Input name="name" value={formData.name} onChange={handleChange} required />
+                        <Input
+                          name="name"
+                          value={formData.name}
+                          onChange={handleChange}
+                          required
+                        />
                       </div>
-                      <div className="space-y-2">
+
+                      <div>
                         <Label>Email *</Label>
-                        <Input type="email" name="email" value={formData.email} onChange={handleChange} required />
+                        <Input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          required
+                        />
                       </div>
                     </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-2">
+                      <div>
                         <Label>Company</Label>
-                        <Input name="company" value={formData.company} onChange={handleChange} />
+                        <Input
+                          name="company"
+                          value={formData.company}
+                          onChange={handleChange}
+                        />
                       </div>
-                      <div className="space-y-2">
+
+                      <div>
                         <Label>Phone</Label>
-                        <Input name="phone" value={formData.phone} onChange={handleChange} />
+                        <Input
+                          name="phone"
+                          value={formData.phone}
+                          onChange={handleChange}
+                        />
                       </div>
                     </div>
-                    <div className="space-y-2">
+
+                    <div>
                       <Label>Message *</Label>
-                      <Textarea name="message" rows={5} value={formData.message} onChange={handleChange} required />
+                      <Textarea
+                        name="message"
+                        rows={6}
+                        value={formData.message}
+                        onChange={handleChange}
+                        required
+                      />
                     </div>
-                    <Button type="submit" className="w-full bg-[#0f172a] hover:bg-[#1e293b] text-white py-6">
-                      <Send className="mr-2 h-5 w-5" /> Send Message
+
+                    <Button
+                      type="submit"
+                      className="w-full bg-[#1e3a8a] hover:bg-[#1e40af]"
+                    >
+                      <Send className="mr-2 h-5 w-5" />
+                      Send Message
                     </Button>
                   </form>
                 </CardContent>
               </Card>
             </div>
 
-            {/* Contact Info - Corrected to Solid Deep Navy */}
+            {/* Contact Info - Reverted to your gradient blue card */}
             <div className="space-y-6">
-              <Card className="bg-[#0f172a] text-white border-none shadow-xl">
+              <Card className="bg-[#1e3a8a] text-white border-none">
                 <CardHeader>
-                  <CardTitle className="text-white">Contact Information</CardTitle>
-                  <CardDescription className="text-gray-400">We're here to help</CardDescription>
+                  <CardTitle className="text-white">
+                    Contact Information
+                  </CardTitle>
+                  <CardDescription className="text-blue-100">
+                    We're here to help
+                  </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-8">
+                <CardContent className="space-y-6">
                   {contactInfo.map((info, idx) => (
-                    <div key={idx} className="flex gap-4 items-start">
-                      <div className="bg-blue-500/10 p-3 rounded-lg">
-                        <info.icon className="h-6 w-6 text-blue-400" />
+                    <div key={idx} className="flex gap-4">
+                      <div className="bg-white/10 p-3 rounded-lg">
+                        <info.icon className="h-6 w-6" />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-white">{info.title}</h4>
+                        <h4 className="font-semibold">{info.title}</h4>
                         {info.link ? (
-                          <a href={info.link} className="text-gray-400 hover:text-blue-400 transition-colors">{info.content}</a>
+                          <a href={info.link} className="hover:underline">{info.content}</a>
                         ) : (
-                          <p className="text-gray-400">{info.content}</p>
+                          <p>{info.content}</p>
                         )}
                       </div>
                     </div>
@@ -147,7 +219,6 @@ export function About() {
                 </CardContent>
               </Card>
             </div>
-
           </div>
         </div>
       </section>
