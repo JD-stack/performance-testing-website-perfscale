@@ -69,7 +69,7 @@ export default function BlogPage() {
   return (
     <div className="bg-[#0f172a] min-h-screen text-white p-10">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold mb-10">Performance Testing Blog</h1>
+        <h1 className="text-4xl font-bold mb-10">Blogs</h1>
 
         {posts.length === 0 ? (
           <div className="text-center py-20">
