@@ -217,7 +217,7 @@ export function Home() {
                     </Button>
                   </Link>
                   <Link to="/services">
-                    <Button variant="outline" className="w-full border-[#3b82f6] text-[#3b82f6] hover:bg-blue-50">
+                    <Button variant="outline" className="w-full bg-[#1e3a8a] hover:bg-[#1e40af] text-white">
                       View Services
                     </Button>
                   </Link>
