@@ -93,7 +93,7 @@ export function NavBar() {
             {account.role === "admin" && (
               <>
                 <Link to="/admin">
-                  <Button variant="outline" className="!border-white !text-white hover:!bg-white hover:!text-[#0f2f7a] whitespace-nowrap bg-transparent">
+                  <Button className="hover:text-blue-300 transition whitespace-nowrap">
                     Dashboard
                   </Button>
                 </Link>
