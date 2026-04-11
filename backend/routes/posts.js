@@ -57,5 +57,27 @@ router.get("/:id", async (req, res) => {
   if (!post) return res.status(404).json({ message: "Post not found" });
   res.json(post);
 });
+/* ================= DELETE BLOG POST ================= */
+router.delete("/:id", adminAuth, async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
 
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    // 1. Delete image from Cloudinary using the publicId
+    if (post.publicId) {
+      await cloudinary.uploader.destroy(post.publicId);
+    }
+
+    // 2. Delete post from MongoDB
+    await Post.findByIdAndDelete(req.params.id);
+
+    res.json({ message: "Post and associated image deleted successfully" });
+  } catch (err) {
+    console.error("Post deletion error:", err);
+    res.status(500).json({ message: "Server error during deletion" });
+  }
+});
 module.exports = router;
