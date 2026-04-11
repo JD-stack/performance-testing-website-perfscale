@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom"; // Added useNavigate
-import { toast } from "sonner"; // Assuming you're using sonner based on your editor code
+import { useParams, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { Button } from "../components/ui/button";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -11,7 +11,7 @@ export default function SinglePost() {
   const [post, setPost] = useState<any>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // 1. Check if the user is an admin
+  // IMPROVED: More robust admin check
   const isAdmin = localStorage.getItem("role") === "admin";
 
   useEffect(() => {
@@ -21,9 +21,8 @@ export default function SinglePost() {
       .catch(() => toast.error("Failed to load post"));
   }, [id]);
 
-  // 2. Logic to delete the post
   const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this post? This action cannot be undone.")) return;
+    if (!window.confirm("Are you sure? This cannot be undone.")) return;
 
     try {
       setIsDeleting(true);
@@ -35,64 +34,60 @@ export default function SinglePost() {
       });
 
       if (res.ok) {
-        toast.success("Post deleted successfully");
-        navigate("/posts"); // Redirect back to the blog list
+        toast.success("Post deleted");
+        navigate("/posts");
       } else {
         const data = await res.json();
-        toast.error(data.message || "Failed to delete post");
+        toast.error(data.message || "Delete failed");
       }
     } catch (err) {
-      toast.error("Server error. Please try again.");
+      toast.error("Server error.");
     } finally {
       setIsDeleting(false);
     }
   };
 
-  if (!post) {
-    return (
-      <div className="bg-[#0f172a] min-h-screen text-white flex items-center justify-center">
-        <p className="text-gray-400 text-lg">Loading post...</p>
-      </div>
-    );
-  }
+  if (!post) return <div className="bg-[#0f172a] min-h-screen" />;
 
   return (
-    <div className="bg-[#0f172a] min-h-screen text-white p-10">
-      <div className="max-w-4xl mx-auto">
-        {/* FIX 1: Restricted Thumbnail Size */}
-        {/* We use h-[400px] and object-cover to ensure it never fills the screen */}
-        <div className="w-full h-[300px] md:h-[450px] overflow-hidden rounded-xl mb-8 border border-gray-800">
-          <img 
-            src={post.thumbnail} 
-            alt={post.title}
-            className="w-full h-full object-cover object-center" 
-          />
-        </div>
+    <div className="bg-[#0f172a] min-h-screen text-white flex flex-col">
+      {/* HEADER: Fixed height container prevents the fullscreen image issue */}
+      <div className="relative w-full h-[250px] md:h-[400px] overflow-hidden shadow-2xl">
+        <img 
+          src={post.thumbnail} 
+          alt={post.title}
+          className="w-full h-full object-cover" 
+        />
+        {/* Dark gradient ensures title is readable and image blends into background */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/20 to-transparent" />
+      </div>
 
-        <div className="flex justify-between items-start mb-6">
+      {/* CONTENT AREA */}
+      <div className="max-w-4xl mx-auto w-full px-6 py-10 flex-grow">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
           <div>
-            <h1 className="text-4xl font-bold mb-2">{post.title}</h1>
-            <p className="text-gray-400">By {post.author}</p>
+            <h1 className="text-3xl md:text-5xl font-bold leading-tight">{post.title}</h1>
+            <p className="text-gray-400 mt-2 text-lg">By {post.author}</p>
           </div>
 
-          {/* FIX 2: Admin Delete Button */}
+          {/* DELETE BUTTON: Visible only to admins */}
           {isAdmin && (
             <Button
               onClick={handleDelete}
               disabled={isDeleting}
               variant="destructive"
-              className="bg-red-600 hover:bg-red-700 text-white"
+              className="bg-red-600 hover:bg-red-700 w-fit shrink-0 px-6 py-6 text-lg"
             >
               {isDeleting ? "Deleting..." : "Delete Post"}
             </Button>
           )}
         </div>
 
-        <hr className="border-gray-800 mb-8" />
+        <hr className="border-gray-800 mb-10" />
 
         <div
           dangerouslySetInnerHTML={{ __html: post.content }}
-          className="prose prose-invert max-w-none text-gray-300 leading-relaxed"
+          className="prose prose-invert max-w-none text-gray-300 text-lg leading-relaxed mb-20"
         />
       </div>
     </div>
