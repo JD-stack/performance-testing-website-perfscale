@@ -103,7 +103,7 @@ export function About() {
   return (
     <div className="min-h-screen">
       {/* Header */}
-      <section className="bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] text-white py-16">
+      <section className="bg-[#0f172a] text-white py-20 border-b border-gray-600">
         <div className="max-w-7xl mx-auto px-4">
           <h1 className="text-4xl font-bold mb-4 text-white">
             About PerfScale
