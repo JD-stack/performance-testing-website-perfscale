@@ -248,7 +248,7 @@ export function Services() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Link to="/contact">
+                <Link to="/about">
                   <Button className="w-full bg-white text-[#1e3a8a] hover:bg-gray-100">
                     Request a Consultation
                   </Button>
