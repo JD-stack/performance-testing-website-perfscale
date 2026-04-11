@@ -11,20 +11,12 @@ import { Label } from "../components/ui/label";
 import { Textarea } from "../components/ui/textarea";
 import { Button } from "../components/ui/button";
 import {
-  Award,
-  Users,
-  Target,
-  TrendingUp,
-  Shield,
-  Lightbulb,
-  Heart,
-  Zap,
   Mail,
   Phone,
   MapPin,
   Send,
 } from "lucide-react";
-import { toast } from "sonner@2.0.3";
+import { toast } from "sonner"; // Standardized import
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -37,190 +29,117 @@ export function About() {
     message: "",
   });
 
-  /* ================= SUBMIT TO BACKEND ================= */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     try {
       const res = await fetch(`${API_URL}/api/contact`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       const data = await res.json();
-
       if (!res.ok) {
         toast.error(data.message || "Failed to send message");
         return;
       }
 
-      toast.success("Message sent successfully! We'll get back to you soon.");
-      setFormData({
-        name: "",
-        email: "",
-        company: "",
-        phone: "",
-        message: "",
-      });
+      toast.success("Message sent successfully!");
+      setFormData({ name: "", email: "", company: "", phone: "", message: "" });
     } catch {
       toast.error("Server unreachable. Please try again later.");
     }
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const contactInfo = [
-    {
-      icon: Mail,
-      title: "Email",
-      content: "contact@perfscale.com",
-      link: "mailto:contact@perfscale.com",
-    },
-    {
-      icon: Phone,
-      title: "Phone",
-      content: "+1 (555) 123-4567",
-      link: "tel:+15551234567",
-    },
-    {
-      icon: MapPin,
-      title: "Office",
-      content: "123 Tech Boulevard, San Francisco, CA 94105",
-      link: null,
-    },
+    { icon: Mail, title: "Email", content: "contact@perfscale.com", link: "mailto:contact@perfscale.com" },
+    { icon: Phone, title: "Phone", content: "+1 (555) 123-4567", link: "tel:+15551234567" },
+    { icon: MapPin, title: "Office", content: "123 Tech Boulevard, SF, CA", link: null },
   ];
 
   return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <section className="bg-[#0f172a] text-white py-20 border-b border-gray-600">
-        <div className="max-w-7xl mx-auto px-4">
-          <h1 className="text-4xl font-bold mb-4 text-white">
+    <div className="min-h-screen bg-white">
+      {/* Header - Corrected to Deep Navy */}
+      <section className="bg-[#0f172a] text-white py-24 border-b border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 text-center md:text-left">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
             About PerfScale
           </h1>
-          <p className="text-xl text-blue-100 max-w-3xl">
-            Delivering world-class performance testing services since 2015
+          <p className="text-xl text-gray-400 max-w-3xl">
+            Delivering world-class performance testing services since 2015.
           </p>
         </div>
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-20 bg-white">
+      <section id="contact" className="py-20">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
             {/* Contact Form */}
             <div className="lg:col-span-2">
-              <Card className="border-2">
+              <Card className="border-gray-200 shadow-sm">
                 <CardHeader>
-                  <CardTitle className="text-2xl">
-                    Send us a message
-                  </CardTitle>
-                  <CardDescription>
-                    Fill out the form below and we'll get back to you within 24
-                    hours
-                  </CardDescription>
+                  <CardTitle className="text-2xl text-[#0f172a]">Send us a message</CardTitle>
+                  <CardDescription>Fill out the form below and we'll get back to you within 24 hours.</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
+                      <div className="space-y-2">
                         <Label>Full Name *</Label>
-                        <Input
-                          name="name"
-                          value={formData.name}
-                          onChange={handleChange}
-                          required
-                        />
+                        <Input name="name" value={formData.name} onChange={handleChange} required />
                       </div>
-
-                      <div>
+                      <div className="space-y-2">
                         <Label>Email *</Label>
-                        <Input
-                          type="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          required
-                        />
+                        <Input type="email" name="email" value={formData.email} onChange={handleChange} required />
                       </div>
                     </div>
-
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
+                      <div className="space-y-2">
                         <Label>Company</Label>
-                        <Input
-                          name="company"
-                          value={formData.company}
-                          onChange={handleChange}
-                        />
+                        <Input name="company" value={formData.company} onChange={handleChange} />
                       </div>
-
-                      <div>
+                      <div className="space-y-2">
                         <Label>Phone</Label>
-                        <Input
-                          name="phone"
-                          value={formData.phone}
-                          onChange={handleChange}
-                        />
+                        <Input name="phone" value={formData.phone} onChange={handleChange} />
                       </div>
                     </div>
-
-                    <div>
+                    <div className="space-y-2">
                       <Label>Message *</Label>
-                      <Textarea
-                        name="message"
-                        rows={6}
-                        value={formData.message}
-                        onChange={handleChange}
-                        required
-                      />
+                      <Textarea name="message" rows={5} value={formData.message} onChange={handleChange} required />
                     </div>
-
-                    <Button
-                      type="submit"
-                      className="w-full bg-[#1e3a8a] hover:bg-[#1e40af]"
-                    >
-                      <Send className="mr-2 h-5 w-5" />
-                      Send Message
+                    <Button type="submit" className="w-full bg-[#0f172a] hover:bg-[#1e293b] text-white py-6">
+                      <Send className="mr-2 h-5 w-5" /> Send Message
                     </Button>
                   </form>
                 </CardContent>
               </Card>
             </div>
 
-            {/* Contact Info */}
+            {/* Contact Info - Corrected to Solid Deep Navy */}
             <div className="space-y-6">
-              <Card className="bg-gradient-to-br from-[#1e3a8a] to-[#3b82f6] text-white border-none">
+              <Card className="bg-[#0f172a] text-white border-none shadow-xl">
                 <CardHeader>
-                  <CardTitle className="text-white">
-                    Contact Information
-                  </CardTitle>
-                  <CardDescription className="text-blue-100">
-                    We're here to help
-                  </CardDescription>
+                  <CardTitle className="text-white">Contact Information</CardTitle>
+                  <CardDescription className="text-gray-400">We're here to help</CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-6">
+                <CardContent className="space-y-8">
                   {contactInfo.map((info, idx) => (
-                    <div key={idx} className="flex gap-4">
-                      <div className="bg-white/10 p-3 rounded-lg">
-                        <info.icon className="h-6 w-6" />
+                    <div key={idx} className="flex gap-4 items-start">
+                      <div className="bg-blue-500/10 p-3 rounded-lg">
+                        <info.icon className="h-6 w-6 text-blue-400" />
                       </div>
                       <div>
-                        <h4 className="font-semibold">{info.title}</h4>
+                        <h4 className="font-semibold text-white">{info.title}</h4>
                         {info.link ? (
-                          <a href={info.link}>{info.content}</a>
+                          <a href={info.link} className="text-gray-400 hover:text-blue-400 transition-colors">{info.content}</a>
                         ) : (
-                          <p>{info.content}</p>
+                          <p className="text-gray-400">{info.content}</p>
                         )}
                       </div>
                     </div>
@@ -228,10 +147,10 @@ export function About() {
                 </CardContent>
               </Card>
             </div>
+
           </div>
         </div>
       </section>
     </div>
   );
 }
-
